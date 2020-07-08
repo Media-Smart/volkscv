@@ -1,7 +1,7 @@
 import numpy as np
 
 from .base import BaseMetric
-from .tools import average_precision_score
+from .libs import average_precision_score
 
 
 class APscore(BaseMetric):

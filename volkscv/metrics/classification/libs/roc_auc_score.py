@@ -7,7 +7,7 @@ from .utils._base import _average_binary_score, _average_multiclass_ovo_score
 from .utils._label import label_binarize, _encode
 from .utils.multiclass import type_of_target
 from .utils.validation import check_array, check_consistent_length, column_or_1d
-from ..roc_curve import roc_curve
+from .roc_curve import roc_curve
 
 
 def auc(x, y):

@@ -1,7 +1,7 @@
 import numpy as np
 
 from .base import BaseMetric
-from .tools import roc_auc_score
+from .libs import roc_auc_score
 
 
 class AUCscore(BaseMetric):

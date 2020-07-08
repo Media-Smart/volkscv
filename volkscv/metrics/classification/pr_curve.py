@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from .base import BaseMetric
-from .tools import precision_recall_curve
+from .libs import precision_recall_curve
 
 
 class PRCurve(BaseMetric):

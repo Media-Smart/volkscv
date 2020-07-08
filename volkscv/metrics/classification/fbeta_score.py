@@ -1,7 +1,7 @@
 import numpy as np
 
 from .base import BaseMetric
-from .tools import fbeta_score
+from .libs import fbeta_score
 
 
 class Fbetascore(BaseMetric):

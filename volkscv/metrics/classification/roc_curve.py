@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from .base import BaseMetric
-from .tools import roc_curve
+from .libs import roc_curve
 
 
 class ROCCurve(BaseMetric):
