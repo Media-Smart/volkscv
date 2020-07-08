@@ -36,4 +36,4 @@ We have tested the following versions of OS and softwares:
 This repository is currently maintained by Chenhao Wang ([@C-H-Wong](http://github.com/C-H-Wong)), Hongxiang Cai ([@hxcai](http://github.com/hxcai)), Yichao Xiong ([@mileistone](https://github.com/mileistone)).
 
 ## Credits
-We got and modify much code from [scikit-learn](https://github.com/scikit-learn/scikit-learn), thanks to [scikit-learn](https://github.com/scikit-learn/scikit-learn).
+We got and modified much code from [scikit-learn](https://github.com/scikit-learn/scikit-learn), thanks to [scikit-learn](https://github.com/scikit-learn/scikit-learn).
