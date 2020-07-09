@@ -36,7 +36,6 @@ class ROCCurve(BaseMetric):
         self.probas_pred = None
 
     def compute(self, pred, target):
-        self._check_pred_range(pred)
         self._y_true_temp = target
         self._probas_pred_temp = pred
         return None
@@ -64,6 +63,10 @@ class ROCCurve(BaseMetric):
                 'thresholds': thresholds,
             }
         return accumulate_state
+
+    def check(self, pred, target):
+        super().check(pred, target)
+        self._check_pred_range(pred)
 
     def export(self, export_path='.', **kwargs):
 

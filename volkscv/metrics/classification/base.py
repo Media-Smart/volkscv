@@ -9,6 +9,7 @@ class BaseMetric(object, metaclass=ABCMeta):
     This class is abstract, providing a standard interface for metrics of this type.
     """
     def __init__(self):
+        super(BaseMetric, self).__init__()
         self.reset()
 
     @abstractmethod
@@ -33,9 +34,6 @@ class BaseMetric(object, metaclass=ABCMeta):
         Returns:
             metric value or process value for current batch
         """
-        self._check_type(pred, target)
-        self._check_match(pred, target)
-
         pass
 
     @abstractmethod
@@ -58,6 +56,13 @@ class BaseMetric(object, metaclass=ABCMeta):
         """
         pass
 
+    def check(self, pred, target):
+        """
+        Check inputs
+        """
+        self._check_type(pred, target)
+        self._check_match(pred, target)
+
     @staticmethod
     def _check_match(pred, target):
         assert pred.shape[0] == target.shape[0], \
@@ -79,6 +84,7 @@ class BaseMetric(object, metaclass=ABCMeta):
             "Pred should stand for the predicted probability with sum up to 1"
 
     def __call__(self, pred, target):
+        self.check(pred, target)
         current_state = self.compute(pred, target)
         self.update()
         return current_state

@@ -47,7 +47,6 @@ class APscore(BaseMetric):
 
     def compute(self, pred, target):
         self._num_examples_temp = target.shape[0]
-        self._check_pred_range(pred)
         self._y_true_temp = target
         self._probas_pred_temp = pred
         return None
@@ -86,6 +85,10 @@ class APscore(BaseMetric):
             raise KeyError(f'mode "{self.mode}" do not exist')
 
         return accumulate_state
+
+    def check(self, pred, target):
+        super().check(pred, target)
+        self._check_pred_range(pred)
 
 
 class mAPscore(APscore):
