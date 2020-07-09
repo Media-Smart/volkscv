@@ -27,11 +27,8 @@ class ConfusionMatrix(BaseMetric):
 
     def reset(self):
         self.cfsmtx = np.zeros((self.num_classes, self.num_classes))
-        self.num_examples = 0
 
     def compute(self, pred, target):
-        self._num_examples_temp = target.shape[0]
-
         pred_index = np.argmax(pred, axis=1)
         self.current_state = np.bincount(target*self.num_classes + pred_index,
                                          minlength=self.num_classes**2
@@ -39,7 +36,6 @@ class ConfusionMatrix(BaseMetric):
         return self.current_state
 
     def update(self, n=1):
-        self.num_examples += self._num_examples_temp * n
         self.cfsmtx += self.current_state
 
     def accumulate(self):
