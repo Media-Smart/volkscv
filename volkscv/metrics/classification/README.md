@@ -55,7 +55,7 @@ for epoch in range(num_max_epoch):
     acc_epoch = topkacc.accumulate()
 
 >>> acc_epoch
-{'top_1': 0.6, 'top_2': 0.8, 'top_5': 0.9}
+{'top_1': 0.6, 'top_3': 0.8, 'top_5': 0.9}
 
 ```
 
