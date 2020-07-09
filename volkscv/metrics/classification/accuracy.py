@@ -1,52 +1,6 @@
-import torch
-
 import numpy as np
 
 from .base import BaseMetric
-
-
-class TopKAccuracybyTensor(BaseMetric):
-    """
-    compute top N accuracy for classification
-    """
-    def __init__(self, topk=(1,)):
-        self.topk = topk
-        super(TopKAccuracybyTensor, self).__init__()
-
-    def reset(self):
-        self.current_state = []
-        self.accumulate_state = []
-        self.sum = np.zeros(len(self.topk))
-        self.count = 0
-
-    def compute(self, pred, target):
-        assert torch.is_tensor(pred) and torch.is_tensor(target), \
-            "Only tensor is supported for computing accuracy"
-        assert pred.size(0) == target.size(0), \
-            "pred and target don't match"
-
-        with torch.no_grad():
-            maxk = max(self.topk)
-            assert maxk <= pred.size(1), \
-                "max k must be no bigger than the number of categories"
-
-            batch_size = target.size(0)
-            _, pred_topk_index = pred.topk(maxk, dim=1, largest=True, sorted=True)
-            pred_topk_index = pred_topk_index.t()
-            correct = pred_topk_index.eq(target.view(1, -1).expand_as(pred_topk_index))
-            self.current_state = []
-            for k in self.topk:
-                correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
-                self.current_state.append(float(correct_k.mul_(100.0 / batch_size)))
-        return self.current_state
-
-    def update(self, n=1):
-        self.count += n
-        self.sum += np.array(self.current_state)*n
-
-    def accumulate(self):
-        self.accumulate_state = list(self.sum / (self.count + 1e-15))
-        return self.accumulate_state
 
 
 class TopKAccuracy(BaseMetric):
@@ -96,7 +50,7 @@ class TopKAccuracy(BaseMetric):
 
     def accumulate(self):
         acc = list(self.sum / (self.count + 1e-15))
-        self.accumulate_state = {}
+        accumulate_state = {}
         for i, k in enumerate(self.topk):
-            self.accumulate_state['top_' + str(k) + '_Accuracy'] = acc[i]
-        return self.accumulate_state
+            accumulate_state['top_' + str(k)] = acc[i]
+        return accumulate_state

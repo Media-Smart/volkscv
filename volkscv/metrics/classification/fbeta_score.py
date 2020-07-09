@@ -99,14 +99,14 @@ class Fbetascore(BaseMetric):
         self.probas_pred = concatenator(self.probas_pred, self._probas_pred_temp)
 
     def accumulate(self):
-        self.accumulate_state = {}
+        accumulate_state = {}
 
         if self.mode == 'binary':
             for cat_id in range(self.num_classes):
                 f_score = fbeta_score(self.y_true, self.probas_pred,
                                       beta=self.beta, pos_label=cat_id,
                                       average='binary')
-                self.accumulate_state[str(cat_id)] = f_score
+                accumulate_state[str(cat_id)] = f_score
 
         else:
             if self.mode not in ['multiclass', 'multilabel-indicator']:
@@ -116,6 +116,6 @@ class Fbetascore(BaseMetric):
                                   self.probas_pred,
                                   beta=self.beta,
                                   **self.kwargs)
-            self.accumulate_state[f'f{self.beta}_score'] = f_score
+            accumulate_state[f'f{self.beta}_score'] = f_score
 
-        return self.accumulate_state
+        return accumulate_state

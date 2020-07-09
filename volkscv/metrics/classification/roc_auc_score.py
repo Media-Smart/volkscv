@@ -105,13 +105,13 @@ class AUCscore(BaseMetric):
         self.probas_pred = concatenator(self.probas_pred, self._probas_pred_temp)
 
     def accumulate(self):
-        self.accumulate_state = {}
+        accumulate_state = {}
 
         if self.mode == 'binary':
             for cat_id in range(self.num_classes):
                 auc_score = roc_auc_score(self.y_true,
                                           self.probas_pred[:, cat_id])
-                self.accumulate_state[str(cat_id)] = auc_score
+                accumulate_state[str(cat_id)] = auc_score
 
         else:
             if self.mode == 'multiclass':
@@ -124,6 +124,6 @@ class AUCscore(BaseMetric):
             auc_score = roc_auc_score(self.y_true,
                                       self.probas_pred,
                                       **self.kwargs)
-            self.accumulate_state['auc_score'] = auc_score
+            accumulate_state['auc_score'] = auc_score
 
-        return self.accumulate_state
+        return accumulate_state

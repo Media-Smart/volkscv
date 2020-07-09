@@ -1,5 +1,5 @@
 ## Introduction
-This is an open source classification based metric toolbox based on Python and Numpy.
+This is an open source toolbox of classification based metrics based on Python and Numpy.
 
 ## Features
 - The toolbox contains most commonly used metrics in classification tasks in model training 
@@ -7,11 +7,10 @@ This is an open source classification based metric toolbox based on Python and N
   precision-recall curve, ROC curve, etc.
   
 - The metrics covers tasks like binary classification, multiclass classification and 
-  multilabel classification, etc, can be called in model training process or evaluation 
-  in model analysis period.
+  multilabel classification, etc, can be called in model training process or model evaluation period.
   
 - The architecture is based on Python and Numpy, so the toolbox is not limited to the 
-  framework used in model training or evaluation.
+  framework like pytorch or tensorflow, etc, used in model training or evaluation.
 
 ## License
 
@@ -30,6 +29,35 @@ We have tested the following versions of OS and softwares:
 - OS: Ubuntu 16.04.6 LTS
 - Python 3.7.3
 - Numpy 1.16.4
+
+## Usage
+### Known Issues
+- the inputs (pred , target, etc.) of all metrics have to be numpy array.
+- the output value of all metrics are stored in a dict format.
+ 
+Take topk accuracy for example in pytorch classification training:
+
+```shell
+from volkscv.metrics.classification import TopKAccuracy
+
+for epoch in range(num_max_epoch):
+    topkacc = TopKAccuracy(topk=(1,3,5))
+    for (image, target) in dataloader:
+        ...
+        pred = model(image)
+        loss = ...
+        ...
+        # calculate acc for current batch
+        acc_current_batch = topkacc(pred.numpy(), target.numpy())
+        # calculate average acc from the start of current epoch till current batch
+        acc_current_average = topkacc.accumulate()
+    # calculate acc of the epoch
+    acc_epoch = topkacc.accumulate()
+
+>>> acc_epoch
+{'top_1': 0.6, 'top_2': 0.8, 'top_5': 0.9}
+
+```
 
 ## Contact
 

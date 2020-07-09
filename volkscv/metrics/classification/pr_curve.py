@@ -52,23 +52,25 @@ class PRCurve(BaseMetric):
         self.probas_pred = concatenator(self.probas_pred, self._probas_pred_temp)
 
     def accumulate(self):
-        self.accumulate_state = {}
+        accumulate_state = {}
         for cat_id in range(self.num_classes):
             precision, recall, thresholds = precision_recall_curve(self.y_true,
                                                                    self.probas_pred[:, cat_id],
                                                                    pos_label=cat_id)
-            self.accumulate_state[str(cat_id)] = {
+            accumulate_state[str(cat_id)] = {
                 'precision': precision,
                 'recall': recall,
                 'thresholds': thresholds,
             }
-        return self.accumulate_state
+        return accumulate_state
 
     def export(self, export_path='.', **kwargs):
 
         os.makedirs(export_path, exist_ok=True)
 
-        for cat_id in self.accumulate_state.keys():
+        accumulate_state = self.accumulate()
+
+        for cat_id in accumulate_state.keys():
 
             plt.figure(11, figsize=(9, 9), dpi=400)
             plt.xlabel('Recall')
@@ -89,8 +91,8 @@ class PRCurve(BaseMetric):
             }
             line_kwargs.update(**kwargs)
 
-            plt.plot(self.accumulate_state[cat_id]['recall'],
-                     self.accumulate_state[cat_id]['precision'],
+            plt.plot(accumulate_state[cat_id]['recall'],
+                     accumulate_state[cat_id]['precision'],
                      **line_kwargs)
 
             plt.legend(loc='lower left')

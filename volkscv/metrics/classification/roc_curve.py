@@ -53,21 +53,25 @@ class ROCCurve(BaseMetric):
         self.probas_pred = concatenator(self.probas_pred, self._probas_pred_temp)
 
     def accumulate(self):
-        self.accumulate_state = {}
+        accumulate_state = {}
         for cat_id in range(self.num_classes):
             fpr, tpr, thresholds = roc_curve(self.y_true,
                                              self.probas_pred[:, cat_id],
                                              pos_label=cat_id)
-            self.accumulate_state[str(cat_id)] = {
+            accumulate_state[str(cat_id)] = {
                 'true_positive_rate': tpr,
                 'false_positive_rate': fpr,
                 'thresholds': thresholds,
             }
-        return self.accumulate_state
+        return accumulate_state
 
     def export(self, export_path='.', **kwargs):
 
-        for cat_id in self.accumulate_state.keys():
+        os.makedirs(export_path, exist_ok=True)
+
+        accumulate_state = self.accumulate()
+
+        for cat_id in accumulate_state.keys():
 
             plt.figure(11, figsize=(9, 9), dpi=400)
             plt.xlabel('False Positive Rate')
@@ -88,8 +92,8 @@ class ROCCurve(BaseMetric):
             }
             line_kwargs.update(**kwargs)
 
-            plt.plot(self.accumulate_state[cat_id]['false_positive_rate'],
-                     self.accumulate_state[cat_id]['true_positive_rate'],
+            plt.plot(accumulate_state[cat_id]['false_positive_rate'],
+                     accumulate_state[cat_id]['true_positive_rate'],
                      **line_kwargs)
 
             plt.legend(loc='lower left')

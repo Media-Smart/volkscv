@@ -66,14 +66,14 @@ class APscore(BaseMetric):
         self.probas_pred = concatenator(self.probas_pred, self._probas_pred_temp)
 
     def accumulate(self):
-        self.accumulate_state = {}
+        accumulate_state = {}
 
         if self.mode == 'binary':
             for cat_id in range(self.num_classes):
                 ap_score = average_precision_score(self.y_true,
                                                    self.probas_pred[:, cat_id],
                                                    pos_label=cat_id)
-                self.accumulate_state[str(cat_id)] = ap_score
+                accumulate_state[str(cat_id)] = ap_score
 
         elif self.mode == 'multilabel-indicator':
             ap_score = average_precision_score(self.y_true,
@@ -81,11 +81,11 @@ class APscore(BaseMetric):
                                                pos_label=1,
                                                average=None)
             for cat_id in range(self.num_classes):
-                self.accumulate_state[str(cat_id)] = ap_score[cat_id]
+                accumulate_state[str(cat_id)] = ap_score[cat_id]
         else:
             raise KeyError(f'mode "{self.mode}" do not exist')
 
-        return self.accumulate_state
+        return accumulate_state
 
 
 class mAPscore(APscore):
@@ -139,11 +139,11 @@ class mAPscore(APscore):
         }
 
     def accumulate(self):
-        self.accumulate_state = {}
+        accumulate_state = {}
         ap_score = average_precision_score(self.y_true,
                                            self.probas_pred,
                                            pos_label=1,
                                            **self.kwargs)
-        self.accumulate_state['mAP'] = ap_score
+        accumulate_state['mAP'] = ap_score
 
-        return self.accumulate_state
+        return accumulate_state

@@ -43,8 +43,10 @@ class ConfusionMatrix(BaseMetric):
         self.cfsmtx += self.current_state
 
     def accumulate(self):
-        self.accumulate_state = self.cfsmtx
-        return self.accumulate_state
+        accumulate_state = {
+            'confusion matrix': self.cfsmtx
+        }
+        return accumulate_state
 
 
 class CMAccuracy(ConfusionMatrix):
@@ -72,10 +74,10 @@ class CMAccuracy(ConfusionMatrix):
     def accumulate(self):
         cmAccuracy = self.cfsmtx.diagonal().sum() / (self.cfsmtx.sum() + 1e-15)
 
-        self.accumulate_state = {
+        accumulate_state = {
             'cmAccuracy': cmAccuracy
         }
-        return self.accumulate_state
+        return accumulate_state
 
 
 class CMPrecisionRecall(ConfusionMatrix):
@@ -104,8 +106,8 @@ class CMPrecisionRecall(ConfusionMatrix):
         def operator(dim):
             return self.cfsmtx.diagonal() / (self.cfsmtx.sum(axis=dim) + 1e-15)
 
-        self.accumulate_state = {
+        accumulate_state = {
             'cmPrecision': operator(0),
             'cmRecall': operator(1),
         }
-        return self.accumulate_state
+        return accumulate_state
