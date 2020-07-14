@@ -50,8 +50,8 @@ for epoch in range(num_max_epoch):
     # calculate ap of the epoch
     ap_epoch = ap(pred_file_path, target_file_path)
 
->>> miou_epoch
-{'mIoU': 0.8}
+>>> ap_epoch
+{'map': 0.807, 'ap50': 0.995}
 
 ```
 
