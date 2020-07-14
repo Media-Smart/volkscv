@@ -8,7 +8,7 @@ This is an open source toolbox of segmentation based metrics based on Python and
 - The metrics can be called in model training process or model evaluation period.
   
 - The architecture is based on Python and Numpy, so the toolbox is not limited to the 
-  framework like pytorch or tensorflow, etc, used in model training or evaluation.
+  framework like pytorch or tensorflow, etc, can be used in model training or evaluation.
 
 ## License
 
