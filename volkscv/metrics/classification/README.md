@@ -1,34 +1,13 @@
-## Introduction
-This is an open source toolbox of classification based metrics based on Python and Numpy.
-
-## Features
-- The toolbox contains most commonly used metrics in classification tasks in model training 
-  and evaluation, including accuracy, confusion matrix with associated analysis, F-beta score, 
-  precision-recall curve, ROC curve, etc.
-  
-- The metrics covers tasks like binary classification, multiclass classification and 
-  multilabel classification, etc, can be called in model training process or model evaluation period.
-  
-- The architecture is based on Python and Numpy, so the toolbox is not limited to the 
-  framework like pytorch or tensorflow, etc, used in model training or evaluation.
-
-## License
-
-This project is released under the [Apache 2.0 license](LICENSE).
-
-## Installation
-
-### Requirements
-- Linux
-- Python >= 3
-- Numpy >= 1.13.3
-- Scipy >= 0.19.1
-
-We have tested the following versions of OS and softwares:
-
-- OS: Ubuntu 16.04.6 LTS
-- Python 3.7.3
-- Numpy 1.16.4
+## Support
+- [x] [TopKAccuracy](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/accuracy.py)
+- [x] [ConfusionMatrix](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/confusion_matrix.py)
+- [x] [CMAccuracy](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/confusion_matrix.py)
+- [x] [CMPrecisionRecall](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/confusion_matrix.py)
+- [x] [Fbetascore](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/fbeta_score.py)
+- [x] [PRCurve](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/pr_curve.py)
+- [x] [ROCCurve](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/roc_curve.py)
+- [x] [APscore](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/average_precision_score.py)
+- [x] [mAPscore](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/average_precision_score.py)
 
 ## Usage
 ### Known Issues
@@ -58,10 +37,3 @@ for epoch in range(num_max_epoch):
 {'top_1': 0.6, 'top_3': 0.8, 'top_5': 0.9}
 
 ```
-
-## Contact
-
-This repository is currently maintained by Chenhao Wang ([@C-H-Wong](http://github.com/C-H-Wong)), Hongxiang Cai ([@hxcai](http://github.com/hxcai)), Yichao Xiong ([@mileistone](https://github.com/mileistone)).
-
-## Credits
-We got and modified much code from [scikit-learn](https://github.com/scikit-learn/scikit-learn), thanks to [scikit-learn](https://github.com/scikit-learn/scikit-learn).

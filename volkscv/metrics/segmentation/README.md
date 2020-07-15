@@ -1,31 +1,9 @@
-## Introduction
-This is an open source toolbox of segmentation based metrics based on Python and Numpy.
-
-## Features
-- The toolbox contains most commonly used metrics in segmentation tasks in model training 
-  and evaluation, including confusion matrix, accuracy, IoU, mIoU, dice score, etc.
-  
-- The metrics can be called in model training process or model evaluation period.
-  
-- The architecture is based on Python and Numpy, so the toolbox is not limited to the 
-  framework like pytorch or tensorflow, etc, can be used in model training or evaluation.
-
-## License
-
-This project is released under the [Apache 2.0 license](LICENSE).
-
-## Installation
-
-### Requirements
-- Linux
-- Python >= 3
-- Numpy >= 1.13.3
-
-We have tested the following versions of OS and softwares:
-
-- OS: Ubuntu 16.04.6 LTS
-- Python 3.7.3
-- Numpy 1.16.4
+## Support
+- [x] [ConfusionMatrix](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/confusion_matrix.py)
+- [x] [Accuracy](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/confusion_matrix.py)
+- [x] [IoU](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/confusion_matrix.py)
+- [x] [mIoU](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/confusion_matrix.py)
+- [x] [DiceScore](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/confusion_matrix.py)
 
 ## Usage
 ### Known Issues
@@ -55,7 +33,3 @@ for epoch in range(num_max_epoch):
 {'mIoU': 0.8}
 
 ```
-
-## Contact
-
-This repository is currently maintained by Chenhao Wang ([@C-H-Wong](http://github.com/C-H-Wong)), Hongxiang Cai ([@hxcai](http://github.com/hxcai)), Yichao Xiong ([@mileistone](https://github.com/mileistone)).

@@ -1,31 +1,7 @@
-## Introduction
-This is an open source toolbox of detection based metrics based on Python and Numpy.
-
-## Features
-- The toolbox contains most commonly used metrics in detection tasks in model training 
-  and evaluation, ap50, ap75, map, pr curve, etc.
-  
-- The metrics can be called in model evaluation period.
-  
-- The architecture is based on Python and Numpy, so the toolbox is not limited to the 
-  framework like pytorch or tensorflow, etc, can be used in model training or evaluation.
-
-## License
-
-This project is released under the [Apache 2.0 license](LICENSE).
-
-## Installation
-
-### Requirements
-- Linux
-- Python >= 3
-- Numpy >= 1.13.3
-
-We have tested the following versions of OS and softwares:
-
-- OS: Ubuntu 16.04.6 LTS
-- Python 3.7.3
-- Numpy 1.16.4
+## Support
+- [x] [AveragePrecision](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/detection/AveragePrecision)
+- [x] [PRCurve](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/detection/pr_curve.py)
+- [x] [COCOAnalysis](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/detection/base.py)
 
 ## Usage
 ### Known Issues
