@@ -28,7 +28,7 @@ class ConfusionMatrix(BaseMetric):
         self.cfsmtx = np.zeros((self.num_classes,)*2)
 
     def compute(self, pred, target):
-        pred_index = np.argmax(pred, axis=3)
+        pred_index = np.argmax(pred, axis=1)  # channel C
         mask = (target >= 0) & (target < self.num_classes)
 
         self.current_state = np.bincount(self.num_classes*target[mask].astype('int') + pred_index[mask],

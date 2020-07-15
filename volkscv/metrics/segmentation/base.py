@@ -63,7 +63,8 @@ class BaseMetric(object, metaclass=ABCMeta):
 
     @staticmethod
     def _check_match(pred, target):
-        assert pred.shape[0:2] == target.shape[0:2], \
+        assert (pred.shape[0] == target.shape[0]) and \
+               (pred.shape[2:4] == target.shape[1:3]), \
             "pred and target don't match"
 
     @staticmethod
