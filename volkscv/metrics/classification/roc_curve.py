@@ -1,4 +1,5 @@
 import os
+import time
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -70,6 +71,8 @@ class ROCCurve(BaseMetric):
 
     def export(self, export_path='.', **kwargs):
 
+        timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+
         os.makedirs(export_path, exist_ok=True)
 
         accumulate_state = self.accumulate()
@@ -101,5 +104,5 @@ class ROCCurve(BaseMetric):
 
             plt.legend(loc='lower left')
             plt.tight_layout()
-            plt.savefig(os.path.join(export_path, f'roc_curve_of_cat_{cat_id}'), dpi=400)
+            plt.savefig(os.path.join(export_path, timestamp + f'roc_curve_of_cat_{cat_id}'), dpi=400)
             plt.close()

@@ -1,4 +1,5 @@
 import os
+import time
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -18,6 +19,8 @@ class PRCurve(COCOAnalysis):
         return accumulate_state
 
     def export(self, export_path='.', with_anno=True, ious=(0.5, ), colors=('crimson', ), **kwargs):
+
+        timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
 
         os.makedirs(export_path, exist_ok=True)
 
@@ -58,5 +61,5 @@ class PRCurve(COCOAnalysis):
                                      color=line_kwargs['color'], fontsize=3, rotation=80)
 
             plt.tight_layout()
-            plt.savefig(os.path.join(export_path, f'pr_curve_of_cat_{cat_id}'), dpi=400)
+            plt.savefig(os.path.join(export_path, timestamp + f'pr_curve_of_cat_{cat_id}'), dpi=400)
             plt.close()
