@@ -1,5 +1,6 @@
 ## Support
 - [x] [AveragePrecision](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/detection/AveragePrecision)
+- [x] [AverageRecall](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/detection/AverageRecall)
 - [x] [PRCurve](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/detection/pr_curve.py)
 - [x] [COCOAnalysis](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/detection/base.py)
 
