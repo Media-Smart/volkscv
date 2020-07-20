@@ -9,6 +9,16 @@ from .base import COCOAnalysis
 
 class PRCurve(COCOAnalysis):
 
+    def __init__(self, ious=None):
+        super().__init__()
+        self.ious = ious
+
+    def compute(self, pred_path, target_path):
+        super().compute(pred_path, target_path)
+        # self.ap_iou = np.linspace(0.1, 0.95, np.round((0.95 - .1) / .05) + 1, endpoint=True).round(3)
+        if self.ious is not None:
+            self.cocoEval.params.iouThrs = np.sort(np.unique(np.array(self.ious)), axis=0)
+
     def accumulate(self):
         super().accumulate()
         accumulate_state = {
@@ -18,11 +28,27 @@ class PRCurve(COCOAnalysis):
         }
         return accumulate_state
 
-    def export(self, export_path='.', with_anno=True, ious=(0.5, ), colors=('crimson', ), **kwargs):
+    def export(self, export_path=None, with_anno=True, ious=None, colors=('crimson', ), **kwargs):
+
+        if self.ious is not None:
+            if ious is None:
+                ious = self.ious
+            else:
+                for iou in ious:
+                    assert iou in self.ious, f'iou:({iou}) needs to be specified in class initialization'
+        else:
+            if ious is None:
+                ious = (0.5, )
+
+        assert len(ious) <= len(colors), \
+            'number of colors is less than number of curves, please specify enough colors'
 
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
 
-        os.makedirs(export_path, exist_ok=True)
+        if export_path is None:
+            raise NotADirectoryError('export_path must be specified!')
+        else:
+            os.makedirs(export_path, exist_ok=True)
 
         for cat_id in range(self.precision.shape[2]):
 
@@ -45,10 +71,13 @@ class PRCurve(COCOAnalysis):
                 }
                 line_kwargs.update(**kwargs)
 
-                assert iou in np.arange(0.5, 0.955, 0.05).round(2), \
-                    f'iou: {iou} is not supported, iou needs to be the integral multiple of 0.05 in [0.5. 0.95]'
+                if self.ious is None:
+                    assert iou in np.arange(0.5, 0.955, 0.05).round(2), \
+                        f'iou: {iou} is not supported, iou needs to be the integral multiple of 0.05 in [0.5. 0.95]'
+                    iou_id = round((iou-0.5) / 0.05)
+                else:
+                    iou_id = np.argwhere(self.cocoEval.params.iouThrs == iou)[0][0]
 
-                iou_id = round((iou-0.5) / 0.05)
                 plt.plot(np.arange(0.0, 1.01, 0.01), self.precision[iou_id, :, cat_id, 0, 2], **line_kwargs)
                 plt.legend(loc='lower left')
                 if with_anno:
@@ -61,5 +90,5 @@ class PRCurve(COCOAnalysis):
                                      color=line_kwargs['color'], fontsize=3, rotation=80)
 
             plt.tight_layout()
-            plt.savefig(os.path.join(export_path, timestamp + f'pr_curve_of_cat_{cat_id}'), dpi=400)
+            plt.savefig(os.path.join(export_path, timestamp + f'_pr_curve_of_cat_{cat_id}'), dpi=400)
             plt.close()
