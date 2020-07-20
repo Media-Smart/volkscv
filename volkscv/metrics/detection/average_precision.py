@@ -12,7 +12,6 @@ class AveragePrecision(COCOAnalysis):
 
     def compute(self, pred_path, target_path):
         super().compute(pred_path, target_path)
-        # self.ap_iou = np.linspace(0.1, 0.95, np.round((0.95 - .1) / .05) + 1, endpoint=True).round(3)
         if self.ap_iou is not None:
             self.cocoEval.params.iouThrs = np.sort(np.unique(np.array(self.ap_iou)), axis=0)
         if self.maxdets is not None:
