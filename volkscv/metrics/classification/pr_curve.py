@@ -68,11 +68,14 @@ class PRCurve(BaseMetric):
         super().check(pred, target)
         self._check_pred_range(pred)
 
-    def export(self, export_path='.', **kwargs):
+    def export(self, export_path=None, **kwargs):
 
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
 
-        os.makedirs(export_path, exist_ok=True)
+        if export_path is None:
+            raise NotADirectoryError('export_path must be specified!')
+        else:
+            os.makedirs(export_path, exist_ok=True)
 
         accumulate_state = self.accumulate()
 

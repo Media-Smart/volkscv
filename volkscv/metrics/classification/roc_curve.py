@@ -69,11 +69,14 @@ class ROCCurve(BaseMetric):
         super().check(pred, target)
         self._check_pred_range(pred)
 
-    def export(self, export_path='.', **kwargs):
+    def export(self, export_path=None, **kwargs):
 
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
 
-        os.makedirs(export_path, exist_ok=True)
+        if export_path is None:
+            raise NotADirectoryError('export_path must be specified!')
+        else:
+            os.makedirs(export_path, exist_ok=True)
 
         accumulate_state = self.accumulate()
 
@@ -104,5 +107,5 @@ class ROCCurve(BaseMetric):
 
             plt.legend(loc='lower left')
             plt.tight_layout()
-            plt.savefig(os.path.join(export_path, timestamp + f'roc_curve_of_cat_{cat_id}'), dpi=400)
+            plt.savefig(os.path.join(export_path, timestamp + f'_roc_curve_of_cat_{cat_id}'), dpi=400)
             plt.close()
