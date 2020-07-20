@@ -23,6 +23,22 @@ We have tested the following versions of OS and softwares:
 - Python 3.7.3
 - Numpy 1.16.4
 
+### Install volkscv
+1.If your platform is x86 or x64, you can create a conda virtual environment and activate it.
+```shell
+conda create -n volksdep python=3.7 -y
+conda activate volksdep
+```
+2.Clone the volkscv repository
+```shell
+git clone https://github.com/Media-Smart/volkscv.git
+cd volkscv
+```
+3.Setup
+```shell
+python setup.py install
+```
+
 ## Support
 ### Metrics
 - [x] [Classification](https://github.com/Media-Smart/volkscv/tree/master/volkscv/metrics/classification)
