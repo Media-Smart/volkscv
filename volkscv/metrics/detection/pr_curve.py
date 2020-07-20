@@ -9,15 +9,19 @@ from .base import COCOAnalysis
 
 class PRCurve(COCOAnalysis):
 
-    def __init__(self, ious=None):
+    def __init__(self, ious=None, maxdets=None):
         super().__init__()
         self.ious = ious
+        self.maxdets = maxdets
 
     def compute(self, pred_path, target_path):
         super().compute(pred_path, target_path)
-        # self.ap_iou = np.linspace(0.1, 0.95, np.round((0.95 - .1) / .05) + 1, endpoint=True).round(3)
         if self.ious is not None:
             self.cocoEval.params.iouThrs = np.sort(np.unique(np.array(self.ious)), axis=0)
+        if self.maxdets is not None:
+            assert type(self.maxdets) is list, 'maxdets must be a list'
+            self.cocoEval.params.maxDets = list(set(self.maxdets))
+            self.cocoEval.params.maxDets.sort()
 
     def accumulate(self):
         super().accumulate()
@@ -78,15 +82,15 @@ class PRCurve(COCOAnalysis):
                 else:
                     iou_id = np.argwhere(self.cocoEval.params.iouThrs == iou)[0][0]
 
-                plt.plot(np.arange(0.0, 1.01, 0.01), self.precision[iou_id, :, cat_id, 0, 2], **line_kwargs)
+                plt.plot(np.arange(0.0, 1.01, 0.01), self.precision[iou_id, :, cat_id, 0, -1], **line_kwargs)
                 plt.legend(loc='lower left')
                 if with_anno:
                     for j, x in enumerate(np.arange(0.0, 1.01, 0.01)):
                         text = [round(x, 3),
-                                round(self.precision[iou_id, j, cat_id, 0, 2], 3),
-                                round(self.score[iou_id, j, cat_id, 0, 2], 3)]
-                        plt.annotate(text, xy=(x, self.precision[iou_id, j, cat_id, 0, 2]),
-                                     xytext=(x, self.precision[iou_id, j, cat_id, 0, 2] + 0.005),
+                                round(self.precision[iou_id, j, cat_id, 0, -1], 3),
+                                round(self.score[iou_id, j, cat_id, 0, -1], 3)]
+                        plt.annotate(text, xy=(x, self.precision[iou_id, j, cat_id, 0, -1]),
+                                     xytext=(x, self.precision[iou_id, j, cat_id, 0, -1] + 0.005),
                                      color=line_kwargs['color'], fontsize=3, rotation=80)
 
             plt.tight_layout()

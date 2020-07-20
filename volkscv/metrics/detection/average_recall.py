@@ -16,7 +16,8 @@ class AverageRecall(COCOAnalysis):
             self.cocoEval.params.iouThrs = np.sort(np.unique(np.array(self.ar_iou)), axis=0)
         if self.maxdets is not None:
             assert type(self.maxdets) is list, 'maxdets must be a list'
-            self.cocoEval.params.maxDets = self.maxdets
+            self.cocoEval.params.maxDets = list(set(self.maxdets))
+            self.cocoEval.params.maxDets.sort()
 
     def accumulate(self):
         super().accumulate()

@@ -16,7 +16,8 @@ class AveragePrecision(COCOAnalysis):
             self.cocoEval.params.iouThrs = np.sort(np.unique(np.array(self.ap_iou)), axis=0)
         if self.maxdets is not None:
             assert type(self.maxdets) is list, 'maxdets must be a list'
-            self.cocoEval.params.maxDets = self.maxdets
+            self.cocoEval.params.maxDets = list(set(self.maxdets))
+            self.cocoEval.params.maxDets.sort()
 
     def accumulate(self):
         super().accumulate()
@@ -25,17 +26,17 @@ class AveragePrecision(COCOAnalysis):
         if self.ap_iou is None:
             # COCO map setting
             ap_stats.append(
-                self._summarize(1, maxDets=max(self.cocoEval.params.maxDets)))
+                self._summarize(1, maxDets=self.cocoEval.params.maxDets[-1]))
             ap_stats.append(
-                self._summarize(1, iouThr=.5, maxDets=max(self.cocoEval.params.maxDets)))
+                self._summarize(1, iouThr=.5, maxDets=self.cocoEval.params.maxDets[-1]))
             ap_stats.append(
-                self._summarize(1, iouThr=.75, maxDets=max(self.cocoEval.params.maxDets)))
+                self._summarize(1, iouThr=.75, maxDets=self.cocoEval.params.maxDets[-1]))
         else:
             ap_stats.append(
-                self._summarize(1, maxDets=max(self.cocoEval.params.maxDets)))
+                self._summarize(1, maxDets=self.cocoEval.params.maxDets[-1]))
             for iou in self.cocoEval.params.iouThrs:
                 ap_stats.append(
-                    self._summarize(1, iouThr=iou, maxDets=max(self.cocoEval.params.maxDets)))
+                    self._summarize(1, iouThr=iou, maxDets=self.cocoEval.params.maxDets[-1]))
 
         accumulate_state = {
             'map': ap_stats[0],
