@@ -20,7 +20,7 @@ Take topk accuracy for example in pytorch classification training:
 from volkscv.metrics.classification import TopKAccuracy
 
 for epoch in range(num_max_epoch):
-    topkacc = TopKAccuracy(topk=(1,3,5))
+    topkacc = TopKAccuracy(topk=(1, 3, 5))
     for (image, target) in dataloader:
         ...
         pred = model(image)
