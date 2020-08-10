@@ -26,8 +26,8 @@ We have tested the following versions of OS and softwares:
 ### Install volkscv
 1.If your platform is x86 or x64, you can create a conda virtual environment and activate it.
 ```shell
-conda create -n volksdep python=3.7 -y
-conda activate volksdep
+conda create -n volkscv python=3.7 -y
+conda activate volkscv
 ```
 2.Clone the volkscv repository
 ```shell
