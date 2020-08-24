@@ -5,8 +5,8 @@ import numpy as np
 
 class BaseMetric(object, metaclass=ABCMeta):
     """
-    Base metric for segmentation metrics in an online manner.
-    This class is abstract, providing a standard interface for metrics of this type.
+    Base metric for metrics.
+    This class is abstract, providing a standard interface for metrics.
     """
     def __init__(self):
         super(BaseMetric, self).__init__()
@@ -22,22 +22,23 @@ class BaseMetric(object, metaclass=ABCMeta):
     @abstractmethod
     def compute(self, pred, target):
         """
-        Compute metric value for current batch for metrics.
+        Compute metric value for current batch for iterable kind of metrics, eg, Accuracy, etc,
+        or compute process value for statistic kind of metrics, eg, PR_Cure, etc.
 
         Args:
-            pred (numpy.ndarray): prediction results from segmentation model,
-                pred should have the following shape (batch_size, h, w, num_categories)
+            pred (numpy.ndarray): prediction results from classification model,
+                pred should have the following shape (batch_size, num_categories),
+                pred should stand for the predicted probability with sum==1
             target (numpy.ndarray): ground truth  class indices,
-                target should have the following shape (batch_size, h, w)
+                target should have the following shape (batch_size)
         Returns:
             metric value or process value for current batch
         """
         pass
 
-    @abstractmethod
     def update(self, n=1):
         """
-        Add metric value or process value to statistic containers.
+        Add metric value or process value to statistic containers for on-line metrics.
         """
         pass
 
@@ -63,8 +64,7 @@ class BaseMetric(object, metaclass=ABCMeta):
 
     @staticmethod
     def _check_match(pred, target):
-        assert (pred.shape[0] == target.shape[0]) and \
-               (pred.shape[2:4] == target.shape[1:3]), \
+        assert pred.shape[0] == target.shape[0], \
             "pred and target don't match"
 
     @staticmethod

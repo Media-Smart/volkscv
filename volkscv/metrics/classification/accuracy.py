@@ -1,6 +1,6 @@
 import numpy as np
 
-from .base import BaseMetric
+from .. import BaseMetric
 
 
 class TopKAccuracy(BaseMetric):

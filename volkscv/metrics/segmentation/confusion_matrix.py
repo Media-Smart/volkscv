@@ -1,9 +1,9 @@
 import numpy as np
 
-from .base import BaseMetric
+from .. import BaseConfusionMatrix
 
 
-class ConfusionMatrix(BaseMetric):
+class ConfusionMatrix(BaseConfusionMatrix):
     """
     Calculate confusion matrix for segmentation
 
@@ -20,31 +20,11 @@ class ConfusionMatrix(BaseMetric):
         ...     # calculate confusion matrix of the epoch
         ...     cfsmtx_epoch = cfsmtx.accumulate()
     """
-    def __init__(self, num_classes):
-        self.num_classes = num_classes
-        super().__init__()
-
-    def reset(self):
-        self.cfsmtx = np.zeros((self.num_classes,)*2)
-
-    def compute(self, pred, target):
-        pred_index = np.argmax(pred, axis=1)  # channel C
-        mask = (target >= 0) & (target < self.num_classes)
-
-        self.current_state = np.bincount(self.num_classes*target[mask].astype('int') + pred_index[mask],
-                                         minlength=self.num_classes**2
-                                         ).reshape(self.num_classes, self.num_classes)
-        return self.current_state
-
-    def update(self, n=1):
-
-        self.cfsmtx += self.current_state
-
-    def accumulate(self):
-        accumulate_state = {
-            'confusion matrix': self.cfsmtx
-        }
-        return accumulate_state
+    @staticmethod
+    def _check_match(pred, target):
+        assert (pred.shape[0] == target.shape[0]) and \
+               (pred.shape[2:4] == target.shape[1:3]), \
+            "pred and target don't match"
 
 
 class Accuracy(ConfusionMatrix):

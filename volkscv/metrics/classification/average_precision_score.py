@@ -1,10 +1,8 @@
-import numpy as np
-
-from .base import BaseMetric
+from .base import BaseScoreCurve
 from .libs import average_precision_score
 
 
-class APscore(BaseMetric):
+class APscore(BaseScoreCurve):
     """
     Calculate average precision for classification tasks, this method is
     restricted to the binary classification task or multilabel-indicator
@@ -40,30 +38,6 @@ class APscore(BaseMetric):
         self.mode = mode
         super().__init__()
 
-    def reset(self):
-        self.y_true = None
-        self.probas_pred = None
-        self.num_examples = 0
-
-    def compute(self, pred, target):
-        self._num_examples_temp = target.shape[0]
-        self._y_true_temp = target
-        self._probas_pred_temp = pred
-        return None
-
-    def update(self, n=1):
-        self.num_examples += self._num_examples_temp
-
-        def concatenator(total, temp):
-            if total is None:
-                total = temp
-            else:
-                total = np.concatenate((total, temp), axis=0)
-            return total
-
-        self.y_true = concatenator(self.y_true, self._y_true_temp)
-        self.probas_pred = concatenator(self.probas_pred, self._probas_pred_temp)
-
     def accumulate(self):
         accumulate_state = {}
 
@@ -85,10 +59,6 @@ class APscore(BaseMetric):
             raise KeyError(f'mode "{self.mode}" do not exist')
 
         return accumulate_state
-
-    def check(self, pred, target):
-        super().check(pred, target)
-        self._check_pred_range(pred)
 
 
 class mAPscore(APscore):

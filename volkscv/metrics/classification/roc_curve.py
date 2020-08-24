@@ -4,11 +4,11 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .base import BaseMetric
+from .base import BaseScoreCurve
 from .libs import roc_curve
 
 
-class ROCCurve(BaseMetric):
+class ROCCurve(BaseScoreCurve):
     """
     Calculate value(true_positive_rate, false_positive_rate, thresholds) and
     export image of roc curve.
@@ -32,26 +32,6 @@ class ROCCurve(BaseMetric):
         self.num_classes = num_classes
         super().__init__()
 
-    def reset(self):
-        self.y_true = None
-        self.probas_pred = None
-
-    def compute(self, pred, target):
-        self._y_true_temp = target
-        self._probas_pred_temp = pred
-        return None
-
-    def update(self, n=1):
-        def concatenator(total, temp):
-            if total is None:
-                total = temp
-            else:
-                total = np.concatenate((total, temp), axis=0)
-            return total
-
-        self.y_true = concatenator(self.y_true, self._y_true_temp)
-        self.probas_pred = concatenator(self.probas_pred, self._probas_pred_temp)
-
     def accumulate(self):
         accumulate_state = {}
         for cat_id in range(self.num_classes):
@@ -65,18 +45,10 @@ class ROCCurve(BaseMetric):
             }
         return accumulate_state
 
-    def check(self, pred, target):
-        super().check(pred, target)
-        self._check_pred_range(pred)
-
-    def export(self, export_path=None, **kwargs):
+    def export(self, export_path='.', **kwargs):
 
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
-
-        if export_path is None:
-            raise NotADirectoryError('export_path must be specified!')
-        else:
-            os.makedirs(export_path, exist_ok=True)
+        os.makedirs(export_path, exist_ok=True)
 
         accumulate_state = self.accumulate()
 
