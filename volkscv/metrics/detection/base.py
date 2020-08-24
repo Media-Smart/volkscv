@@ -73,8 +73,12 @@ class COCOAnalysis(BaseMetric):
     """
     Basic analysis using pycocotools.
     """
-    def __init__(self):
+    def __init__(self, iou=None, maxdets=None, areaRng=None, areaRngLbl=None):
         super().__init__()
+        self.iou = iou
+        self.maxdets = maxdets
+        self.areaRng = areaRng
+        self.areaRngLbl = areaRngLbl
 
     def reset(self):
         self.cocoEval = None
@@ -87,13 +91,24 @@ class COCOAnalysis(BaseMetric):
         cocoDT = coco.loadRes(pred_path)
         self.cocoEval = COCOeval(coco, cocoDT, 'bbox')
 
+        if self.iou is not None:
+            self.cocoEval.params.iouThrs = np.sort(np.unique(np.array(self.iou)), axis=0)
+        if self.maxdets is not None:
+            assert type(self.maxdets) is list, 'maxdets must be a list'
+            self.cocoEval.params.maxDets = list(set(self.maxdets))
+            self.cocoEval.params.maxDets.sort()
+        if self.areaRng is not None:
+            assert self.areaRngLbl is not None, 'areaRngLbl must be specified for self-defined areaRng!'
+            assert len(self.areaRng) == len(self.areaRngLbl), 'areaRng and areaRngLbl must be match!'
+            self.cocoEval.params.areaRng = self.areaRng
+            self.cocoEval.params.areaRngLbl = self.areaRngLbl
+
     def accumulate(self):
         self.cocoEval.evaluate()
         self.cocoEval.accumulate()
         self.precision = self.cocoEval.eval['precision']
         self.recall = self.cocoEval.eval['recall']
         self.score = self.cocoEval.eval['scores']
-        return None
 
     def _summarize(self, ap=1, iouThr=None, areaRng='all', maxDets=100 ):
         p = self.cocoEval.params
@@ -113,6 +128,7 @@ class COCOAnalysis(BaseMetric):
                 t = np.where(iouThr == p.iouThrs)[0]
                 s = s[t]
             s = s[:, :, :, aind, mind]
+
         else:
             # dimension of recall: [TxKxAxM]
             s = self.recall
