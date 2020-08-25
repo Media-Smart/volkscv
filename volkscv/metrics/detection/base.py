@@ -48,7 +48,7 @@ class BaseDetMetric(BaseMetric, metaclass=ABCMeta):
         return accumulate_stat
 
 
-class COCOAnalysis(BaseMetric):
+class COCOAnalysis(BaseDetMetric):
     """
     Basic analysis using pycocotools.
     """
