@@ -1,9 +1,9 @@
 ## Support
-- [x] [ConfusionMatrix](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/confusion_matrix.py)
-- [x] [Accuracy](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/confusion_matrix.py)
-- [x] [IoU](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/confusion_matrix.py)
-- [x] [mIoU](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/confusion_matrix.py)
-- [x] [DiceScore](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/confusion_matrix.py)
+- [x] [ConfusionMatrix](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/cfx_based_metrics.py)
+- [x] [Accuracy](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/cfx_based_metrics.py)
+- [x] [IoU](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/cfx_based_metrics.py)
+- [x] [mIoU](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/cfx_based_metrics.py)
+- [x] [DiceScore](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/segmentation/cfx_based_metrics.py)
 
 ## Usage
 ### Known Issues

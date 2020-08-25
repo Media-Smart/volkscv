@@ -1,13 +1,14 @@
 ## Support
 - [x] [TopKAccuracy](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/accuracy.py)
-- [x] [ConfusionMatrix](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/confusion_matrix.py)
-- [x] [CMAccuracy](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/confusion_matrix.py)
-- [x] [CMPrecisionRecall](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/confusion_matrix.py)
+- [x] [ConfusionMatrix](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/cfx_based_metrics.py)
+- [x] [CMAccuracy](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/cfx_based_metrics.py)
+- [x] [CMPrecisionRecall](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/cfx_based_metrics.py)
 - [x] [Fbetascore](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/fbeta_score.py)
-- [x] [PRCurve](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/pr_curve.py)
-- [x] [ROCCurve](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/roc_curve.py)
 - [x] [APscore](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/average_precision_score.py)
 - [x] [mAPscore](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/average_precision_score.py)
+- [x] [PRcurve](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/pr_curve.py)
+- [x] [AUCscore](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/roc_auc_score.py)
+- [x] [ROCcurve](https://github.com/Media-Smart/volkscv/blob/master/volkscv/metrics/classification/roc_curve.py)
 
 ## Usage
 ### Known Issues
