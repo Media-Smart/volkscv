@@ -8,7 +8,7 @@ from .base import BaseScoreCurve
 from .libs import precision_recall_curve
 
 
-class PRCurve(BaseScoreCurve):
+class PRcurve(BaseScoreCurve):
     """
     Calculate value(precision, recall, thresholds) and export image of pr curve.
     Note: this implementation is restricted to the binary, multiclass classification

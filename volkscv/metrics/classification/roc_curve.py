@@ -8,7 +8,7 @@ from .base import BaseScoreCurve
 from .libs import roc_curve
 
 
-class ROCCurve(BaseScoreCurve):
+class ROCcurve(BaseScoreCurve):
     """
     Calculate value(true_positive_rate, false_positive_rate, thresholds) and
     export image of roc curve.
