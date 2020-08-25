@@ -1,7 +1,12 @@
-from .average_precision import AveragePrecision
+from .base import COCOAnalysis
 
 
-class AverageRecall(AveragePrecision):
+class AverageRecall(COCOAnalysis):
+
+    def accumulate(self):
+        super().accumulate()
+        accumulate_state = self._display_set()
+        return accumulate_state
 
     def _display_set(self):
 
