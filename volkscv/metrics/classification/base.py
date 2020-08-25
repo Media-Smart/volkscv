@@ -3,7 +3,10 @@ import numpy as np
 from .. import BaseMetric
 
 
-class BaseScoreCurve(BaseMetric):
+BaseClsMetric = BaseMetric
+
+
+class BaseScoreCurve(BaseClsMetric):
 
     def reset(self):
         self.y_true = None

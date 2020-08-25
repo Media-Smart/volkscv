@@ -1,9 +1,9 @@
 import numpy as np
 
-from .. import BaseMetric
+from .base import BaseClsMetric
 
 
-class TopKAccuracy(BaseMetric):
+class TopKAccuracy(BaseClsMetric):
     """
     Calculate top k accuracy for classification
 
