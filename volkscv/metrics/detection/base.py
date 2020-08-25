@@ -5,22 +5,14 @@ import numpy as np
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 
+from .. import BaseMetric
 
-class BaseMetric(object, metaclass=ABCMeta):
+
+class BaseDetMetric(BaseMetric, metaclass=ABCMeta):
     """
     Base metric for detection metrics.
     This class is abstract, providing a standard interface for metrics of this type.
     """
-    def __init__(self):
-        super(BaseMetric, self).__init__()
-        self.reset()
-
-    @abstractmethod
-    def reset(self):
-        """
-        Reset variables to default settings.
-        """
-        pass
 
     @abstractmethod
     def compute(self, pred_path, target_path):
@@ -35,19 +27,6 @@ class BaseMetric(object, metaclass=ABCMeta):
                 annotation, saved in a json file.
         Returns:
             metric value or process value for current batch
-        """
-        pass
-
-    @abstractmethod
-    def accumulate(self):
-        """
-        Compute accumulated metric value.
-        """
-        pass
-
-    def export(self):
-        """
-        Export figures, images or reports of metrics
         """
         pass
 
