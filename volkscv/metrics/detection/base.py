@@ -1,3 +1,4 @@
+import json
 from abc import ABCMeta, abstractmethod
 
 import numpy as np
@@ -69,7 +70,10 @@ class COCOAnalysis(BaseDetMetric):
         coco = COCO(target_path)
         cocoDT = coco.loadRes(pred_path)
         self.cocoEval = COCOeval(coco, cocoDT, 'bbox')
+        self.cate_name = [cate['name'] for cate in json.load(open(target_path))['categories']]
+        self._param_setter()
 
+    def _param_setter(self):
         if self.iou is not None:
             self.cocoEval.params.iouThrs = np.sort(np.unique(np.array(self.iou)), axis=0)
         if self.maxdets is not None:

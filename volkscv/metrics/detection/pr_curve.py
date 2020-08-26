@@ -1,9 +1,12 @@
 import os
+import json
 import time
 import warnings
 
 import numpy as np
 import matplotlib.pyplot as plt
+from pycocotools.coco import COCO
+from pycocotools.cocoeval import COCOeval
 
 from .base import COCOAnalysis
 
@@ -96,5 +99,57 @@ class PRCurve(COCOAnalysis):
                                          xytext=(x, self.precision[iou_id, j, cat_id, 0, -1] + 0.005),
                                          color=line_kwargs['color'], fontsize=3, rotation=80)
             plt.tight_layout()
-            plt.savefig(os.path.join(export_path, timestamp + f'_pr_curve_of_cat_{cat_id}'), dpi=400)
+            plt.savefig(os.path.join(export_path, timestamp + f'_pr_curve_of_cate{cat_id+1}_{self.cate_name[cat_id]}'), dpi=400)
             plt.close()
+
+
+class SupercatePRCurve(PRCurve):
+
+    def __init__(self, iou=None, maxdets=None, areaRng=None, areaRngLbl=None):
+        super().__init__(iou=iou, maxdets=maxdets, areaRng=areaRng, areaRngLbl=areaRngLbl)
+
+    def target_rebuild(self, target_path):
+        data = json.load(open(target_path))
+        sup_of_cate = [a['supercategory'] for a in data['categories']]
+        cate_id = [a['id'] for a in data['categories']]
+        self.supercategoryies = sorted(list(set(sup_of_cate)))
+        sup_id_of_cate = [self.supercategoryies.index(sup)+1 for sup in sup_of_cate]
+        self.cate2sup = {}
+        for i, index in enumerate(cate_id):
+            self.cate2sup.update({index: sup_id_of_cate[i]})
+
+        dataset = dict({
+            'info': {},
+            'licenses': [],
+            'images': [],
+            'annotations': [],
+            'categories': []
+        })
+        dataset['images'] = data['images']
+        for i, supercate in enumerate(self.supercategoryies):
+            dataset['categories'].append({
+                'id': i+1,
+                'name': supercate,
+            })
+        for anno in data['annotations']:
+            anno['category_id'] = self.cate2sup[anno['category_id']]
+            dataset['annotations'].append(anno)
+
+        return dataset
+
+    def pred_rebuild(self, pred_path):
+        data = json.load(open(pred_path))
+        result = []
+        for bbox in data:
+            bbox['category_id'] = self.cate2sup[bbox['category_id']]
+            result.append(bbox)
+        return result
+
+    def compute(self, pred_path, target_path):
+        coco = COCO(target_path)
+        coco.dataset = self.target_rebuild(target_path)
+        coco.createIndex()
+        cocoDT = coco.loadRes(self.pred_rebuild(pred_path))
+        self.cocoEval = COCOeval(coco, cocoDT, 'bbox')
+        self.cate_name = self.supercategoryies
+        self._param_setter()
