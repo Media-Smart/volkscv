@@ -1,6 +1,6 @@
 import numpy as np
 
-from . import BaseMetric
+from .base import BaseMetric
 
 
 class BaseConfusionMatrix(BaseMetric):

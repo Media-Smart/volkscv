@@ -1,4 +1,4 @@
-from .. import BaseConfusionMatrix
+from ..confusion_matrix import BaseConfusionMatrix
 
 
 ConfusionMatrix = BaseConfusionMatrix

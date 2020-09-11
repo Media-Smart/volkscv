@@ -6,8 +6,37 @@
 
 ## Usage
 ### Known Issues
-- this metric is based on pycocotools, so the inputs (pred , target, etc.) of all metrics have to be 
-json file path where stores data in COCO format.
+- this metric is based on pycocotools, so the inputs (pred , target, etc.) of all metrics have to follow COCO format.
+- pred format: [{'image_id': XX, 'bbox': [x, y, w, h], 'score': X, 'category_id': X }, ...]
+- target format: {'info': {},
+                  'licenses': [],
+                  'images': [
+                     {'file_name': X,
+                      'height': X,
+                      'width': X,
+                      'id': X
+                     },
+                     ...
+                  ],
+                  'annotations':[
+                     {'segmentation': [],
+                      'area': X,
+                      'iscrowd': 0 or 1,
+                      'image_id': X,
+                      'bbox': [x, y w, h],
+                      'category_id': X,
+                      'id': X,
+                      },
+                      ...
+                  ],
+                  'categories':[
+                     {'id': X,
+                      'name': X,
+                      'supercategory': X,
+                     },
+                     ...
+                  ]
+                 }
 - the output value of all metrics are stored in a dict format.
 
 Take ap30, ap50, map for example in pytorch detection evaluation:
@@ -19,13 +48,11 @@ for epoch in range(num_max_epoch):
     ap = AveragePrecision(iou=[0.3, 0.5])
     for (image, target) in dataloader:
         ...
-        pred = model(image)
+        pred_output = model(image)
         loss = ...
         ...
-        # calculate ap from the start of current epoch till current batch
-        ap_current = ap(pred_file_path, target_file_path)
     # calculate ap of the epoch
-    ap_epoch = ap(pred_file_path, target_file_path)
+    ap_epoch = ap(pred, target)
 
 >>> ap_epoch
  Average Precision  (AP) @[ IoU=0.30:0.50 | area=   all | maxDets=100 ] = 0.952

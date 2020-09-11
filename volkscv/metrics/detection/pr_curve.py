@@ -5,8 +5,8 @@ import warnings
 
 import numpy as np
 import matplotlib.pyplot as plt
-from pycocotools.coco import COCO
-from pycocotools.cocoeval import COCOeval
+from ...utils.cocoapi.pycocotools.coco import COCO
+from ...utils.cocoapi.pycocotools.cocoeval import COCOeval
 
 from .base import COCOAnalysis
 

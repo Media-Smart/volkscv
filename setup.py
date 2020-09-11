@@ -1,7 +1,8 @@
 import os
 import glob
 import shutil
-from setuptools import setup, find_packages
+import numpy as np
+from setuptools import setup, find_packages, Extension
 from setuptools.command.install import install
 from distutils.cmd import Command
 
@@ -47,6 +48,18 @@ class CleanCommand(Command):
                 print('Removing %s' % os.path.relpath(path))
                 shutil.rmtree(path)
 
+
+ext_modules = [
+    Extension(
+        'volkscv.metrics.utils.cocoapi.pycocotools._mask',
+        sources=['volkscv/metrics/utils/cocoapi/common/maskApi.c',
+                 'volkscv/metrics/utils/cocoapi/pycocotools/_mask.pyx'],
+        include_dirs=[np.get_include(), 'volkscv/metrics/utils/cocoapi/common'],
+        extra_compile_args=['-Wno-cpp', '-Wno-unused-function', '-std=c99'],
+    )
+]
+
+
 setup(
     name='volkscv',
     version='0.1.0',
@@ -54,12 +67,16 @@ setup(
     url='',
     license='',
     author='hxcai, chwang',
-    author_email='chxlll@126.com, wch.1993.2@live.com',
+    author_email='chxlll@126.com wch.1993.2@live.com',
     description='A foundational python library for computer vision research and deployment projects',
     long_description=read('README.md'),
     install_requires=[
+        'setuptools>=18.0',
+        'cython>=0.27.3',
+        'matplotlib>=2.1.0',
         'numpy',
     ],
+    ext_modules=ext_modules,
     python_requires='>3.6',
     cmdclass={
         'clean': CleanCommand,

@@ -1,6 +1,6 @@
 import numpy as np
 
-from .. import BaseConfusionMatrix
+from ..confusion_matrix import BaseConfusionMatrix
 
 
 class ConfusionMatrix(BaseConfusionMatrix):

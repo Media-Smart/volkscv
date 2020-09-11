@@ -1,12 +1,11 @@
-import json
 from abc import ABCMeta, abstractmethod
 
 import numpy as np
 
-from pycocotools.coco import COCO
-from pycocotools.cocoeval import COCOeval
+from ...utils.cocoapi.pycocotools.coco import COCO
+from ...utils.cocoapi.pycocotools.cocoeval import COCOeval
 
-from .. import BaseMetric
+from ..base import BaseMetric
 
 
 class BaseDetMetric(BaseMetric, metaclass=ABCMeta):
@@ -18,16 +17,45 @@ class BaseDetMetric(BaseMetric, metaclass=ABCMeta):
     @abstractmethod
     def compute(self, pred_path, target_path):
         """
-        Compute metric value for current batch or compute process value for metrics.
+        Compute metric value for current epoch.
 
         Args:
-            pred_path (str): path to results file, prediction results from detection model,
-                stored in a dict, following the format of COCO, saved in a json file.
+            pred_path: path to results json file, or a list.
+                Prediction results from detection model, stored in a dict, following the format of COCO
                 [{'image_id': XX, 'bbox': [x, y, w, h], 'score': X, 'category_id': X }, ...]
-            target_path (str): path to ground truth file following the format of COCO
-                annotation, saved in a json file.
+            target_path: path to ground truth file, or a dict.
+                following the format of COCO annotation.
+                {'info': {},
+                 'licenses': [],
+                 'images': [
+                     {'file_name': X,
+                      'height': X,
+                      'width': X,
+                      'id': X
+                     },
+                     ...
+                 ],
+                 'annotations':[
+                     {'segmentation': [],
+                      'area': X,
+                      'iscrowd': 0 or 1,
+                      'image_id': X,
+                      'bbox': [x, y w, h],
+                      'category_id': X,
+                      'id': X,
+                     },
+                     ...
+                 ],
+                 'categories':[
+                     {'id': X,
+                      'name': X,
+                      'supercategory': X,
+                     },
+                     ...
+                 ]
+                }
         Returns:
-            metric value or process value for current batch
+            metric value for current epoch
         """
         pass
 
@@ -39,8 +67,10 @@ class BaseDetMetric(BaseMetric, metaclass=ABCMeta):
 
     @staticmethod
     def _check_type(pred, target):
-        assert type(pred) == str and type(target) == str, \
-            "Inputs refers to the path to json file"
+        assert type(pred) in [str, list], \
+            "format of pred not supported, needs to be str or list"
+        assert type(target) in [str, dict], \
+            "format of target not supported, needs to be str or dict"
 
     def __call__(self, pred, target):
         self.check(pred, target)
@@ -70,7 +100,7 @@ class COCOAnalysis(BaseDetMetric):
         coco = COCO(target_path)
         cocoDT = coco.loadRes(pred_path)
         self.cocoEval = COCOeval(coco, cocoDT, 'bbox')
-        self.cate_name = [cate['name'] for cate in json.load(open(target_path))['categories']]
+        self.cate_name = [cate['name'] for cate in coco.dataset['categories']]
         self._param_setter()
 
     def _param_setter(self):
