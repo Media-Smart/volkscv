@@ -54,7 +54,7 @@ ext_modules = [
         'volkscv.utils.cocoapi.pycocotools._mask',
         sources=['volkscv/utils/cocoapi/common/maskApi.c',
                  'volkscv/utils/cocoapi/pycocotools/_mask.pyx'],
-        include_dirs=[np.get_include(), 'volkscv/metrics/utils/cocoapi/common'],
+        include_dirs=[np.get_include(), 'volkscv/utils/cocoapi/common'],
         extra_compile_args=['-Wno-cpp', '-Wno-unused-function', '-std=c99'],
     )
 ]
