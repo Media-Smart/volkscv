@@ -20,8 +20,8 @@ This project is released under the [Apache 2.0 license](LICENSE).
 We have tested the following versions of OS and softwares:
 
 - OS: Ubuntu 16.04.6 LTS
-- Python 3.7.3
-- Numpy 1.16.4
+- Python: 3.7.3
+- Numpy: 1.16.4
 
 ### Install volkscv
 1.If your platform is x86 or x64, you can create a conda virtual environment and activate it.
