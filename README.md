@@ -20,8 +20,8 @@ This project is released under the [Apache 2.0 license](LICENSE).
 We have tested the following versions of OS and softwares:
 
 - OS: Ubuntu 16.04.6 LTS
-- Python 3.7.3
-- Numpy 1.16.4
+- Python: 3.7.3
+- Numpy: 1.16.4
 
 ### Install volkscv
 1.If your platform is x86 or x64, you can create a conda virtual environment and activate it.
@@ -40,6 +40,10 @@ python setup.py install
 ```
 
 ## Support
+### Analyzer
+- [x] [Statistics](https://github.com/ChaseMonsterAway/volkscv/tree/master/volkscv/analyzer/statistics)
+- [x] [Visualization](https://github.com/ChaseMonsterAway/volkscv/tree/master/volkscv/analyzer/visualization)
+
 ### Metrics
 - [x] [Classification](https://github.com/Media-Smart/volkscv/tree/master/volkscv/metrics/classification)
 - [x] [Segmentation](https://github.com/Media-Smart/volkscv/tree/master/volkscv/metrics/segmentation)
@@ -47,7 +51,12 @@ python setup.py install
 
 ## Contact
 
-This repository is currently maintained by Chenhao Wang ([@C-H-Wong](http://github.com/C-H-Wong)), Hongxiang Cai ([@hxcai](http://github.com/hxcai)), Yichao Xiong ([@mileistone](https://github.com/mileistone)).
+This repository is currently maintained by 
+Chenhao Wang ([@C-H-Wong](http://github.com/C-H-Wong)), 
+Yuxin Zou ([@Yuxin Zou](https://github.com/YuxinZou)),
+Jun Sun([@ChaseMonsterAway](https://github.com/ChaseMonsterAway)),
+Hongxiang Cai ([@hxcai](http://github.com/hxcai)), 
+Yichao Xiong ([@mileistone](https://github.com/mileistone)).
 
 ## Credits
 We got and modified much code from [scikit-learn](https://github.com/scikit-learn/scikit-learn), [cocoapi](https://github.com/cocodataset/cocoapi), 
