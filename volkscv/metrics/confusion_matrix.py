@@ -20,6 +20,7 @@ class BaseConfusionMatrix(BaseMetric):
         ...     # calculate confusion matrix of the epoch
         ...     cfsmtx_epoch = cfsmtx.accumulate()
     """
+
     def __init__(self, num_classes):
         self.num_classes = num_classes
         super().__init__()
@@ -31,8 +32,8 @@ class BaseConfusionMatrix(BaseMetric):
         pred_index = np.argmax(pred, axis=1)
         mask = (target >= 0) & (target < self.num_classes)
 
-        self.current_state = np.bincount(self.num_classes*target[mask].astype('int') + pred_index[mask],
-                                         minlength=self.num_classes**2
+        self.current_state = np.bincount(self.num_classes * target[mask].astype('int') + pred_index[mask],
+                                         minlength=self.num_classes ** 2
                                          ).reshape(self.num_classes, self.num_classes)
         return self.current_state
 

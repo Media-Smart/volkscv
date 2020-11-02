@@ -1,1 +1,1 @@
-from . import metrics, utils
+from . import metrics, analyzer, utils
