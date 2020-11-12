@@ -40,6 +40,10 @@ python setup.py install
 ```
 
 ## Support
+### Analyzer
+- [x] [Statistics](https://github.com/ChaseMonsterAway/volkscv/tree/master/volkscv/analyzer/statistics)
+- [x] [Visualization](https://github.com/ChaseMonsterAway/volkscv/tree/master/volkscv/analyzer/visualization)
+
 ### Metrics
 - [x] [Classification](https://github.com/Media-Smart/volkscv/tree/master/volkscv/metrics/classification)
 - [x] [Segmentation](https://github.com/Media-Smart/volkscv/tree/master/volkscv/metrics/segmentation)
@@ -47,7 +51,12 @@ python setup.py install
 
 ## Contact
 
-This repository is currently maintained by Chenhao Wang ([@C-H-Wong](http://github.com/C-H-Wong)), Hongxiang Cai ([@hxcai](http://github.com/hxcai)), Yichao Xiong ([@mileistone](https://github.com/mileistone)).
+This repository is currently maintained by 
+Chenhao Wang ([@C-H-Wong](http://github.com/C-H-Wong)), 
+Yuxin Zou ([@Yuxin Zou](https://github.com/YuxinZou)),
+Jun Sun([@ChaseMonsterAway](https://github.com/ChaseMonsterAway)),
+Hongxiang Cai ([@hxcai](http://github.com/hxcai)), 
+Yichao Xiong ([@mileistone](https://github.com/mileistone)).
 
 ## Credits
 We got and modified much code from [scikit-learn](https://github.com/scikit-learn/scikit-learn), [cocoapi](https://github.com/cocodataset/cocoapi), 

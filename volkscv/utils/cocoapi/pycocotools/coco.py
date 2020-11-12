@@ -26,7 +26,7 @@ __version__ = '2.0'
 #  getImgIds  - Get img ids that satisfy given filter conditions.
 #  loadAnns   - Load anns with the specified ids.
 #  loadCats   - Load cats with the specified ids.
-#  loadImgs   - Load imgs with the specified ids.
+#  loadImgs   - Load visualization with the specified ids.
 #  annToMask  - Convert segmentation in an annotation to binary mask.
 #  showAnns   - Display the specified annotations.
 #  loadRes    - Load algorithm results and create API for accessing them.
@@ -138,7 +138,7 @@ class COCO:
     def getAnnIds(self, imgIds=[], catIds=[], areaRng=[], iscrowd=None):
         """
         Get ann ids that satisfy given filter conditions. default skips that filter
-        :param imgIds  (int array)     : get anns for given imgs
+        :param imgIds  (int array)     : get anns for given visualization
                catIds  (int array)     : get anns for given cats
                areaRng (float array)   : get anns for given area range (e.g. [0 inf])
                iscrowd (boolean)       : get anns for given crowd label (False or True)
@@ -188,8 +188,8 @@ class COCO:
     def getImgIds(self, imgIds=[], catIds=[]):
         '''
         Get img ids that satisfy given filter conditions.
-        :param imgIds (int array) : get imgs for given ids
-        :param catIds (int array) : get imgs with all given cats
+        :param imgIds (int array) : get visualization for given ids
+        :param catIds (int array) : get visualization with all given cats
         :return: ids (int array)  : integer array of img ids
         '''
         imgIds = imgIds if _isArrayLike(imgIds) else [imgIds]
@@ -232,7 +232,7 @@ class COCO:
         """
         Load anns with the specified ids.
         :param ids (int array)       : integer ids specifying img
-        :return: imgs (object array) : loaded img objects
+        :return: visualization (object array) : loaded img objects
         """
         if _isArrayLike(ids):
             return [self.imgs[id] for id in ids]
