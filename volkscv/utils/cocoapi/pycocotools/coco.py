@@ -76,23 +76,20 @@ class COCO:
         :return:
         """
         # load dataset
-        self.dataset,self.anns,self.cats,self.imgs = dict(),dict(),dict(),dict()
+        self.dataset, self.anns, self.cats, self.imgs = dict(), dict(), dict(), dict()
         self.imgToAnns, self.catToImgs = defaultdict(list), defaultdict(list)
         if not annotation_file == None:
+            print('loading annotations into memory...')
+            tic = time.time()
             if type(annotation_file) == str:
-                print('loading annotations into memory...')
-                tic = time.time()
                 dataset = json.load(open(annotation_file, 'r'))
-                print('Done (t={:0.2f}s)'.format(time.time() - tic))
-
             elif type(annotation_file) == dict:
                 dataset = annotation_file
-
             else:
                 raise TypeError('The format of annotation not in coco style!')
 
             assert type(dataset) == dict, 'annotation file format {} not supported'.format(type(dataset))
-
+            print('Done (t={:0.2f}s)'.format(time.time() - tic))
             self.dataset = dataset
             self.createIndex()
 
