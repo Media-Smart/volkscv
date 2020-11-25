@@ -1,7 +1,6 @@
 from setuptools import dist
 dist.Distribution().fetch_build_eggs(
-    ['setuptools>=18.0',
-     'cython>=0.27.3',
+    ['cython>=0.27.3',
      'numpy'])
 
 import os
