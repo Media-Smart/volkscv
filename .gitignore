@@ -7,7 +7,6 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-.idea
 .Python
 build/
 develop-eggs/
@@ -129,25 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# local file
-1.png
-cc.png
-default_result.png
-anchor_default/
-coco_train_data/
-data_combine/
-fp_analysis/
-show_func_image_ratio/
-test_result/
-tmp.py
-*.zip
-*.ipynb
-*.pdf
-*.json
-*.docx
-~*
-*vsdx
-rrun.py
-sample.md
-yangli.md
-standard.md
+# my
+.idea/
+.idea/vsc.xml

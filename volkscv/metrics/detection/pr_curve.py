@@ -13,18 +13,16 @@ from .base import COCOAnalysis
 
 class PRCurve(COCOAnalysis):
 
-    def accumulate(self):
-        super().accumulate()
-
+    def compute(self, pred, target):
+        super().compute(pred, target)
         if self.areaRng is not None:
             warnings.warn(f'PR Curve for different area range is not supported yet!')
-
-        accumulate_state = {
+        state = {
             'precision': self.precision,
             'recall': self.recall,
             'score': self.score,
         }
-        return accumulate_state
+        return state
 
     def get_valid_iou(self, ious):
         _ious = []
@@ -105,21 +103,22 @@ class PRCurve(COCOAnalysis):
 
 class SupercatePRCurve(PRCurve):
 
-    def __init__(self, iou=None, maxdets=None, areaRng=None, areaRngLbl=None):
-        super().__init__(iou=iou, maxdets=maxdets, areaRng=areaRng, areaRngLbl=areaRngLbl)
-
-    def _loader(self, file):
-        if type(file) == str:
-            data = json.load(open(file, 'r'))
-        elif type(file) in [list, dict]:
-            data = file
-        else:
-            raise TypeError('The format of annotation not in coco style!')
-        assert type(data) in [list, dict], 'annotation file format {} not supported'.format(type(data))
-        return data
+    def __init__(self,
+                 iou=None,
+                 maxdets=None,
+                 areaRng=None,
+                 areaRngLbl=None):
+        super().__init__(iou=iou,
+                         maxdets=maxdets,
+                         areaRng=areaRng,
+                         areaRngLbl=areaRngLbl,
+                         cates_num=None,
+                         cates_ids=None,
+                         mode='file')
+        warnings.warn('This function only support "file" mode!')
 
     def target_rebuild(self, target_path):
-        data = self._loader(target_path)
+        data = json.load(open(target_path))
         sup_of_cate = [a['supercategory'] for a in data['categories']]
         cate_id = [a['id'] for a in data['categories']]
         self.supercategoryies = sorted(list(set(sup_of_cate)))
@@ -148,7 +147,7 @@ class SupercatePRCurve(PRCurve):
         return dataset
 
     def pred_rebuild(self, pred_path):
-        data = self._loader(pred_path)
+        data = json.load(open(pred_path))
         result = []
         for bbox in data:
             bbox['category_id'] = self.cate2sup[bbox['category_id']]
@@ -163,3 +162,16 @@ class SupercatePRCurve(PRCurve):
         self.cocoEval = COCOeval(coco, cocoDT, 'bbox')
         self.cate_name = self.supercategoryies
         self._param_setter()
+        self.cocoEval.evaluate()
+        self.cocoEval.accumulate()
+        self.precision = self.cocoEval.eval['precision']
+        self.recall = self.cocoEval.eval['recall']
+        self.score = self.cocoEval.eval['scores']
+        if self.areaRng is not None:
+            warnings.warn(f'PR Curve for different area range is not supported yet!')
+        state = {
+            'precision': self.precision,
+            'recall': self.recall,
+            'score': self.score,
+        }
+        return state

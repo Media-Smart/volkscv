@@ -20,7 +20,6 @@ class ConfusionMatrix(BaseConfusionMatrix):
         ...     # calculate confusion matrix of the epoch
         ...     cfsmtx_epoch = cfsmtx.accumulate()
     """
-
     @staticmethod
     def _check_match(pred, target):
         assert (pred.shape[0] == target.shape[0]) and \
@@ -50,7 +49,6 @@ class Accuracy(ConfusionMatrix):
         ...     # calculate confusion matrix based accuracy of the epoch
         ...     cmacc_epoch = cmacc.accumulate()
     """
-
     def __init__(self, num_classes, average='pixel'):
         self.num_classes = num_classes
         self.average = average
@@ -91,7 +89,6 @@ class IoU(ConfusionMatrix):
         ...     # calculate confusion matrix based IoU of the epoch
         ...     cmacc_epoch = iou.accumulate()
     """
-
     def __init__(self, num_classes):
         self.num_classes = num_classes
         super().__init__(num_classes=self.num_classes)
@@ -127,7 +124,6 @@ class mIoU(IoU):
         ...     # calculate confusion matrix based mIoU of the epoch
         ...     cmacc_epoch = miou.accumulate()
     """
-
     def __init__(self, num_classes, average='equal'):
         self.num_classes = num_classes
         self.average = average
@@ -143,7 +139,7 @@ class mIoU(IoU):
             miou = np.nanmean(ious)
         elif self.average == 'frequency_weighted':
             pos_freq = self.cfsmtx.sum(axis=1) / self.cfsmtx.sum()
-            miou = (pos_freq[pos_freq > 0] * ious[pos_freq > 0]).sum()
+            miou = (pos_freq[pos_freq > 0]*ious[pos_freq > 0]).sum()
 
         accumulate_state = {
             'mIoU': miou
@@ -168,15 +164,14 @@ class DiceScore(ConfusionMatrix):
         ...     # calculate confusion matrix based dice score of the epoch
         ...     cmacc_epoch = dicescore.accumulate()
     """
-
     def __init__(self, num_classes):
         self.num_classes = num_classes
         super().__init__(self.num_classes)
 
     def accumulate(self):
-        dice_score = 2.0 * self.cfsmtx.diagonal() / (self.cfsmtx.sum(axis=1) +
-                                                     self.cfsmtx.sum(axis=0) +
-                                                     np.finfo(np.float32).eps)
+        dice_score = 2.0*self.cfsmtx.diagonal() / (self.cfsmtx.sum(axis=1) +
+                                                   self.cfsmtx.sum(axis=0) +
+                                                   np.finfo(np.float32).eps)
 
         accumulate_state = {
             'dice_score': dice_score

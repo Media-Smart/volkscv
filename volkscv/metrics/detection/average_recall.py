@@ -3,10 +3,10 @@ from .base import COCOAnalysis
 
 class AverageRecall(COCOAnalysis):
 
-    def accumulate(self):
-        super().accumulate()
-        accumulate_state = self._display_set()
-        return accumulate_state
+    def compute(self, pred, target):
+        super().compute(pred, target)
+        state = self._display_set()
+        return state
 
     def _display_set(self):
 

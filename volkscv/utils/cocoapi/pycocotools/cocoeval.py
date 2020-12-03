@@ -7,6 +7,7 @@ from collections import defaultdict
 from . import mask as maskUtils
 import copy
 
+
 class COCOeval:
     # Interface for evaluating detection on the Microsoft COCO dataset.
     #
@@ -79,7 +80,6 @@ class COCOeval:
         if not cocoGt is None:
             self.params.imgIds = sorted(cocoGt.getImgIds())
             self.params.catIds = sorted(cocoGt.getCatIds())
-
 
     def _prepare(self):
         '''
