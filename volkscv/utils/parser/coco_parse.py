@@ -94,7 +94,7 @@ class COCOParser(BaseParser):
                 else:
                     bboxes.append(bbox)
                     labels.append(self.cat2label[ann['category_id']])
-                    segs.append(ann['segmentation'])
+                    segs.append(ann.get('segmentation', []))  # TODO: Default value of segmentation.
 
             if not bboxes:
                 bboxes = np.zeros((0, 4))
