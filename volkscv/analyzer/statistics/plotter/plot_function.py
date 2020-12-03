@@ -73,6 +73,8 @@ def cdf(data,
             continue
         plt.text(a + x_shift, b + y_shift, '%.3f' % b, color='#ED7D31',
                  ha='center', va='bottom', fontsize=10 * label_scale, rotation=rotation)
+    if range[0] == range[1]:
+        range = [range[0] - 1, range[1] + 1]
     plt.xlim(range)
 
 
@@ -122,6 +124,8 @@ def pdf(data,
             continue
         plt.text(a + x_shift, b + y_shift, '%.3f' % b,
                  ha='center', va='bottom', fontsize=10 * label_scale, rotation=rotation)
+    if range[0] == range[1]:
+        range = [range[0] - 1, range[1] + 1]
     plt.xlim(range)
 
 
