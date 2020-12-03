@@ -44,9 +44,9 @@ class ImageProcessor(BaseProcessor):
 
         if self.data.get('shapes', None) is None:
             return None
-        h, w = self.data['shapes'][:, 0], self.data['shapes'][:, 1]
-        return TwoDimPlotter([h, w], 'image hw distribution', plt.scatter,
-                             axis_label=['height', 'width'],
+        w, h = self.data['shapes'][:, 0], self.data['shapes'][:, 1]
+        return TwoDimPlotter([w, h], 'image hw distribution', plt.scatter,
+                             axis_label=['width', 'height'],
                              marker='.', alpha=0.1)
 
     @property
@@ -55,7 +55,8 @@ class ImageProcessor(BaseProcessor):
 
         if self.data.get('shapes', None) is None:
             return None
-        hw_ratio = self.data['shapes'][:, 0] / self.data['shapes'][:, 1]
+        w, h = self.data['shapes'][:, 0], self.data['shapes'][:, 1]
+        hw_ratio = h / w
 
         return OneDimPlotter(hw_ratio, r'image h/w ratio',
                              cdf_pdf,
@@ -68,7 +69,8 @@ class ImageProcessor(BaseProcessor):
 
         if self.data.get('shapes', None) is None:
             return None
-        hw_ratio = self.data['shapes'][:, 0] / self.data['shapes'][:, 1]
+        w, h = self.data['shapes'][:, 0], self.data['shapes'][:, 1]
+        hw_ratio = h / w
         log_ratio = np.log2(hw_ratio)
 
         return OneDimPlotter(log_ratio, r'image h/w ratio (log2)',
@@ -82,7 +84,7 @@ class ImageProcessor(BaseProcessor):
 
         if self.data.get('shapes', None) is None:
             return None
-        h, w = self.data['shapes'][:, 0], self.data['shapes'][:, 1]
+        w, h = self.data['shapes'][:, 0], self.data['shapes'][:, 1]
         sqrt_hw = np.sqrt(h * w)
         range_ = (np.min(sqrt_hw), np.max(sqrt_hw))
 

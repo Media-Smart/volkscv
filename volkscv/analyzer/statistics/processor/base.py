@@ -34,7 +34,7 @@ class BaseProcessor(Base):
                     p_.title(p_.text)
                     p_.plot()
             elif isinstance(p_, BaseProcessor):
-                p_.default_plot()
+                p_.default_plot(*args, **kwargs)
             else:
                 continue
 
