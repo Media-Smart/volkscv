@@ -26,27 +26,32 @@ def save_img(save_path, img):
     cv2.imwrite(save_path, img)
 
 
-def get_index_list(specified_imgs, default_index_list, extention='jpg'):
+def get_index_list(specified_imgs, default_index_list, extension=('all',)):
     """Get index list for image browsing.
 
     Args:
         specified_imgs (str): Images need to be viewed, folder or txt file.
         default_index_list (list): Default images.
-        extention (str): Image extention. Default: 'jpg'.
+        extension (str): Image extension. Default: 'jpg'.
 
     Returns:
         (deque): Images fname list.
     """
+
+    if not isinstance(extension, tuple):
+        extension = (extension, )
     if specified_imgs is None:
         index_list = deque(default_index_list)
     elif os.path.isdir(specified_imgs):
         img_list = os.listdir(specified_imgs)
-        index_list = deque([i for i in img_list])
+        index_list = deque([os.path.join(specified_imgs, i) for i in img_list if i.split('.')[-1] in extension])
     elif specified_imgs.endswith('txt'):
         img_list, _ = read_imglist(specified_imgs)
-        index_list = deque(
-            [i if i.endswith(extention) else f'{i}.{extention}' for i in
-             img_list])
+        if 'all' in extension:
+            index_list = deque(img_list)
+        else:
+            index_list = deque(
+                [i for i in img_list if i.split('.')[-1] in extension])
     else:
         index_list = deque(default_index_list)
     return index_list
