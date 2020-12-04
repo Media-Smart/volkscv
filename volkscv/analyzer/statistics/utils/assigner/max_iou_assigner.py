@@ -112,6 +112,7 @@ class MaxIoUAssigner(BaseAssigner):
             assigned_gt_inds = assigned_gt_inds.to(device)
         # return assign_result
         assigned_gt_inds = assigned_gt_inds.cpu().detach().numpy()
+        assigned_gt_ious = assigned_gt_ious[assigned_gt_inds != -1]
         assigned_gt_inds = assigned_gt_inds[assigned_gt_inds != -1]
 
         return assigned_gt_inds, assigned_gt_ious

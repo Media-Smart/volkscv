@@ -14,7 +14,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 
 ### Requirements
-- Linux
+- Linux or Windows
 - Python >= 3.6
 - Numpy >= 1.13.3
 

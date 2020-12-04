@@ -208,6 +208,7 @@ def get_fig():
         >>> cc._infos.get('example')
     """
 
+    plt.tight_layout()
     collect = get_collect()
     name = plt.get_figlabels()[-1]
     ff = plt.gcf()
