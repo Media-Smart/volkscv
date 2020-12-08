@@ -448,6 +448,7 @@ def draw_bbox(img,
     bboxes = anno.get('bboxes')
     labels = anno.get('labels')
     scores = anno.get('scores')
+    not_ignore = bboxes.shape[0]
     labels_ignore = anno.get('labels_ignore', np.zeros((0,)))
     bboxes_ignore = anno.get('bboxes_ignore', np.zeros((0, 4)))
 
@@ -508,6 +509,12 @@ def draw_bbox(img,
             if not show_fpfn:
                 cv2.rectangle(img_, left_top, right_bottom,
                               color=color, thickness=base_thickness)
+                if show_ignore and idx >= not_ignore:
+                    thickness = base_thickness
+                    color = color_ignore
+                    cv2.rectangle(
+                        img_, left_top, right_bottom, color=color,
+                        thickness=thickness)
             else:
                 if len(f) and f[idx]:
                     if show_fpfn_format == 'mask':
