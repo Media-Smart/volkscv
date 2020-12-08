@@ -53,7 +53,11 @@ class BaseVis(metaclass=ABCMeta):
 
         self._colors = get_pallete(
             self.categories) if colors is None else colors
-        self.fnames = self.img_names.tolist()
+        self.fnames = list(map(self._abs_path, self.img_names.tolist()))
+
+    @staticmethod
+    def _abs_path(path):
+        return os.path.abspath(path)
 
     @property
     def colors(self):
@@ -163,8 +167,6 @@ class BaseVis(metaclass=ABCMeta):
 
         for index, fname in enumerate(index_list):
             print(f'idx:{index + 1}, fname:{fname.split("/")[-1]}')
-            fname = os.path.join(self.img_prefixs[self.fnames.index(fname)],
-                                 fname)
             img, flag = self.img_process(fname, **kwargs)
             if flag:
                 save_path = os.path.join(save_folder, os.path.split(fname)[-1])
@@ -178,10 +180,8 @@ class BaseVis(metaclass=ABCMeta):
             fname (str): Path of image.
             save_folder: Folder path where the image may store.
         """
-        _, fname = os.path.split(fname)
-
-        fname = os.path.join(self.img_prefixs[self.fnames.index(fname)], fname)
-        assert fname in self.img_names, f'{fname} should be in dataset.'
+        fname = self._abs_path(fname)
+        assert fname in self.fnames, f'{fname} should be in dataset.'
 
         img, _ = self.img_process(fname, **kwargs)
         show_img(img)
