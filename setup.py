@@ -71,7 +71,7 @@ ext_modules = [
 
 setup(
     name='volkscv',
-    version='1.1.1',
+    version='1.1.2',
     packages=find_packages(),
     url='https://github.com/Media-Smart/volkscv',
     author='chwang, jsun, yxzou, hxcai, ycxiong',
