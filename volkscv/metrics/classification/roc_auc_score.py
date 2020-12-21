@@ -55,8 +55,8 @@ class AUCscore(BaseScoreCurve):
         ...     for batch in dataloader:
         ...         # calculate auc score of current batch
         ...         # for 'binary' mode, input format should be as follows:
-        ...         #   pred = np.array([[0.8, 0.2], [0.3, 0.7], ...]),
-        ...         #   target = np.array([0, 1, ...])
+        ...         #   pred = np.array([0.1, 0.4, 0.35, 0.8])
+        ...         #   target=np.array([0, 0, 1, 1])
         ...         # while for 'multiclass' mode, it should be like:
         ...         #   pred = np.array([[0.6, 0.2, 0.05, 0.1, 0.05],
         ...         #                    [0.05, 0.2, 0.6, 0.1, 0.05], ...])
@@ -84,24 +84,17 @@ class AUCscore(BaseScoreCurve):
     def accumulate(self):
         accumulate_state = {}
 
-        if self.mode == 'binary':
-            for cat_id in range(self.num_classes):
-                auc_score = roc_auc_score(self.y_true,
-                                          self.probas_pred[:, cat_id])
-                accumulate_state[str(cat_id)] = auc_score
-
+        if self.mode == 'multiclass':
+            self._check_pred_sum(self.probas_pred)
+        elif self.mode == 'binary' or self.mode == 'multilabel-indicator':
+            pass
         else:
-            if self.mode == 'multiclass':
-                self._check_pred_sum(self.probas_pred)
-            elif self.mode == 'multilabel-indicator':
-                pass
-            else:
-                raise KeyError(f'mode "{self.mode}" do not exist')
+            raise KeyError(f'mode "{self.mode}" do not exist')
 
-            auc_score = roc_auc_score(self.y_true,
-                                      self.probas_pred,
-                                      **self.kwargs)
-            accumulate_state['auc_score'] = auc_score
+        auc_score = roc_auc_score(self.y_true,
+                                  self.probas_pred,
+                                  **self.kwargs)
+        accumulate_state['auc_score'] = auc_score
 
         return accumulate_state
 
