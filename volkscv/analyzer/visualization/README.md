@@ -14,16 +14,27 @@ from volkscv.analyzer.visualization import visualization
 
 
 def test_cls():
-    gt_anno = parse_data(format='image',
-                         # txt_file='data/val.txt',
-                         imgs_folder='data')
-    dt_anno = parse_data(format='image',
-                         # txt_file='data/val.txt',
-                         imgs_folder='data')
+    """
+    Format of txt_file:
+        img_path1    dog    0.7
+        img_path1    cat    0.9
+    The first column represents the path of the image file, the second column
+    represents the category, the third column represents the predict score.
+    Note: The score is optional, if you don't have score, you don't have add it. 
+    """
+    gt_anno = parse_data(format='txt',
+                         txt_file=r'gt_file.txt',
+                         categories=('dog', 'cat'),
+                         imgs_folder=r'./test_vis')
+    dt_anno = parse_data(format='txt',
+                         txt_file=r'pred_file.txt',
+                         categories=('dog', 'cat'),
+                         imgs_folder=r'./test_vis')
+
     vis = visualization(task='cls', gt=gt_anno, pred=dt_anno)
     params = dict(save_folder='./result',
-                  # specified_imgs='data/val.txt',
-                  show_ori=True,
+                  show_fpfn=True,
+                  show_ori=False,
                   category_to_show=None,
                   show_score=True)
     vis.show(**params)

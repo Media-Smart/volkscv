@@ -20,7 +20,7 @@ class BaseVis(metaclass=ABCMeta):
         gt (dict): Gt data for visualization.
         pred (dict): Pred data for visualization.
         colors (dict): Colors for visualization.
-        extension (str): Image extention. Default: 'jpg'.
+        extension (str): Image extension. Default: 'jpg'.
     """
 
     def __init__(self,
@@ -53,8 +53,11 @@ class BaseVis(metaclass=ABCMeta):
 
         self._colors = get_pallete(
             self.categories) if colors is None else colors
-        self.fnames = [os.path.split(i)[-1] for i in self.img_names]
-        self.img_prefixs = [os.path.split(i)[0] for i in self.img_names]
+        self.fnames = list(map(self._abs_path, self.img_names.tolist()))
+
+    @staticmethod
+    def _abs_path(path):
+        return os.path.abspath(path)
 
     @property
     def colors(self):
@@ -112,8 +115,6 @@ class BaseVis(metaclass=ABCMeta):
         key = -1
         while len(index_list):
             fname = index_list[0]
-            fname = os.path.join(self.img_prefixs[self.fnames.index(fname)],
-                                 fname)
             img, flag = self.img_process(fname, **kwargs)
             if flag:
                 key = show_img(img)
@@ -147,6 +148,8 @@ class BaseVis(metaclass=ABCMeta):
                 else:
                     index_list.append(index_list.popleft())
                     current_show += 1
+                if current_show >= len(index_list) - 1:
+                    break
                 continue
 
     def save(self, save_folder=None, specified_imgs=None, **kwargs):
@@ -164,8 +167,6 @@ class BaseVis(metaclass=ABCMeta):
 
         for index, fname in enumerate(index_list):
             print(f'idx:{index + 1}, fname:{fname.split("/")[-1]}')
-            fname = os.path.join(self.img_prefixs[self.fnames.index(fname)],
-                                 fname)
             img, flag = self.img_process(fname, **kwargs)
             if flag:
                 save_path = os.path.join(save_folder, os.path.split(fname)[-1])
@@ -179,10 +180,8 @@ class BaseVis(metaclass=ABCMeta):
             fname (str): Path of image.
             save_folder: Folder path where the image may store.
         """
-        _, fname = os.path.split(fname)
-
-        fname = os.path.join(self.img_prefixs[self.fnames.index(fname)], fname)
-        assert fname in self.img_names, f'{fname} should be in dataset.'
+        fname = self._abs_path(fname)
+        assert fname in self.fnames, f'{fname} should be in dataset.'
 
         img, _ = self.img_process(fname, **kwargs)
         show_img(img)
@@ -217,9 +216,8 @@ class BaseVis(metaclass=ABCMeta):
         data = {}
         labels = []
         for key, value in self.data.items():
-            fname_list = value['img_names'].tolist()
-            if fname in fname_list:
-                index = fname_list.index(fname)
+            if fname in self.fnames:
+                index = self.fnames.index(fname)
                 anno = {k: v[index] for k, v in value.items() if v is not None}
                 if isinstance(anno['labels'], np.ndarray):
                     labels.extend(anno['labels'].tolist())

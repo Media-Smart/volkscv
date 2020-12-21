@@ -34,7 +34,7 @@ def read_imglist(imglist_path):
 
     fnames, annos = [], []
     with open(imglist_path, 'r') as fd:
-        for line in fd:
+        for line in fd.readlines():
             ll = line.strip().split()
             fnames.append(ll[0])
             if len(ll) > 1:

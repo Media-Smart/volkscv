@@ -1,3 +1,7 @@
+import platform
+from setuptools import dist
+dist.Distribution().fetch_build_eggs(['cython','numpy'])
+
 import os
 import glob
 import shutil
@@ -5,6 +9,11 @@ import numpy as np
 from setuptools import setup, find_packages, Extension
 from setuptools.command.install import install
 from distutils.cmd import Command
+
+
+EXTRA_COMPILE_ARGS = dict(
+    linux=['-Wno-cpp', '-Wno-unused-function', '-std=c99'],
+    windows=[])
 
 
 def read(fname):
@@ -55,28 +64,25 @@ ext_modules = [
         sources=['volkscv/utils/cocoapi/common/maskApi.c',
                  'volkscv/utils/cocoapi/pycocotools/_mask.pyx'],
         include_dirs=[np.get_include(), 'volkscv/utils/cocoapi/common'],
-        extra_compile_args=['-Wno-cpp', '-Wno-unused-function', '-std=c99'],
+        extra_compile_args=EXTRA_COMPILE_ARGS[platform.system().lower()],
     )
 ]
 
 
 setup(
     name='volkscv',
-    version='0.1.0',
+    version='1.1.2',
     packages=find_packages(),
-    url='',
-    license='',
-    author='hxcai, chwang, jsun, yxzou',
-    author_email='chxlll@126.com wch.1993.2@live.com',
+    url='https://github.com/Media-Smart/volkscv',
+    author='chwang, jsun, yxzou, hxcai, ycxiong',
+    author_email='wch.1993.2@live.com, chxlll@126.com',
     description='A foundational python library for computer vision research and deployment projects',
     long_description=read('README.md'),
     install_requires=[
-        'setuptools>=18.0',
-        'cython>=0.27.3',
+        'cython',
+        'torch',
         'matplotlib>=2.1.0',
         'scipy',
-        'numpy',
-        'torch',
         'opencv-python',
         'lxml',
         'cytoolz',

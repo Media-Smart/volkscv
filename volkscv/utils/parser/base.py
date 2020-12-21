@@ -21,7 +21,7 @@ class BaseParser(metaclass=ABCMeta):
                 xxx.jpg
                 xxxx.jpg
 
-        extensions (str): Image extention. Default: 'jpg'.
+        extensions (str): Image extension. Default: 'jpg'.
     """
 
     def __init__(self,

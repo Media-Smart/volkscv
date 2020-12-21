@@ -3,6 +3,7 @@ Volkscv is a foundational python library for computer vision research and deploy
 
 It provides the following functionalities.
 
+- Analyzer
 - Metrics.
 
 ## LicenseNow
@@ -13,7 +14,7 @@ This project is released under the [Apache 2.0 license](LICENSE).
 
 
 ### Requirements
-- Linux
+- Linux or Windows
 - Python >= 3.6
 - Numpy >= 1.13.3
 
@@ -29,14 +30,9 @@ We have tested the following versions of OS and softwares:
 conda create -n volkscv python=3.7 -y
 conda activate volkscv
 ```
-2.Clone the volkscv repository
+2.Setup
 ```shell
-git clone https://github.com/Media-Smart/volkscv.git
-cd volkscv
-```
-3.Setup
-```shell
-python setup.py install
+pip install "git+https://github.com/Media-Smart/volkscv.git"
 ```
 
 ## Support

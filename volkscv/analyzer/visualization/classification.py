@@ -1,6 +1,7 @@
 from functools import lru_cache
 
 import cv2
+import numpy as np
 
 from .base import BaseVis
 from .utils import draw_image, generate_mpl_figure
@@ -12,6 +13,7 @@ class ClsVis(BaseVis):
     @lru_cache(maxsize=32)
     def img_process(self,
                     fname,
+                    show_fpfn=False,
                     show_ori=False,
                     category_to_show=None,
                     show_score=True):
@@ -20,6 +22,12 @@ class ClsVis(BaseVis):
 
         if not flag:
             return img, flag
+
+        if show_fpfn:
+            assert len(data) == 2, "Show fpfn need both ground truth file" \
+                                   " and prediction file."
+            if data['pred']['labels'] == data['gt']['labels']:
+                return None, False
 
         imgs, title = {}, self.default_title.copy()
         if show_ori:
