@@ -34,7 +34,7 @@ def instance2xml_base(anno):
     return anno_tree
 
 
-def instance2xml_bbox(anno, bbox_type='xyxy'):
+def instance2xml_bbox(anno, bbox_type='xywh'):
     """Parse xml instance information from annotation.
 
     bbox_type: xyxy (xmin, ymin, xmax, ymax);
@@ -49,7 +49,7 @@ def instance2xml_bbox(anno, bbox_type='xyxy'):
     """
 
     assert bbox_type in ['xyxy', 'xywh']
-    if bbox_type == 'xyxy':
+    if bbox_type == 'xywh':
         xmin, ymin, w, h = anno['bbox']
         xmax = xmin + w
         ymax = ymin + h
@@ -71,12 +71,14 @@ def instance2xml_bbox(anno, bbox_type='xyxy'):
 
 def coco2xml_convert(anno_file,
                      output_dir='./result',
+                     bbox_type='xywh',
                      folder_split=False):
     """converting COCO format to xml format.
 
         Args:
             anno_file (str): Path to annotations of data.
             output_dir (str): Path to save folder.
+            bbox_type (str): Bbox format. Default: 'xywh'.
             folder_split (bool): Whether to store file by category.
         """
 
@@ -106,7 +108,7 @@ def coco2xml_convert(anno_file,
                     os.path.join(output_dir,
                                  os.path.splitext(name)[0] + '.xml')]
 
-            anno_tree.append(instance2xml_bbox(group, bbox_type='xyxy'))
+            anno_tree.append(instance2xml_bbox(group, bbox_type=bbox_type))
         for filename in filenames:
             etree.ElementTree(anno_tree).write(filename, pretty_print=True)
         print(f'Formating instance xml file {name} done!')
