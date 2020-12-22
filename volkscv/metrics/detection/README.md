@@ -60,7 +60,7 @@ Using 'online' mode:
 from volkscv.metrics.detection import AveragePrecision
 
 for epoch in range(num_max_epoch):
-    ap = AveragePrecision(iou=[0.3, 0.5], mode='file')
+    ap = AveragePrecision(iou=[0.3, 0.5], mode='online')
     for (image, target) in dataloader:
         ...
         pred = model(image)
