@@ -47,12 +47,7 @@ pip install "git+https://github.com/Media-Smart/volkscv.git"
 
 ## Contact
 
-This repository is currently maintained by 
-Chenhao Wang ([@C-H-Wong](http://github.com/C-H-Wong)), 
-Yuxin Zou ([@Yuxin Zou](https://github.com/YuxinZou)),
-Jun Sun([@ChaseMonsterAway](https://github.com/ChaseMonsterAway)),
-Hongxiang Cai ([@hxcai](http://github.com/hxcai)), 
-Yichao Xiong ([@mileistone](https://github.com/mileistone)).
+This repository is currently maintained by Chenhao Wang ([@C-H-Wong](http://github.com/C-H-Wong)), Yuxin Zou ([@Yuxin Zou](https://github.com/YuxinZou)), Jun Sun([@ChaseMonsterAway](https://github.com/ChaseMonsterAway)), Hongxiang Cai ([@hxcai](http://github.com/hxcai)), Yichao Xiong ([@mileistone](https://github.com/mileistone)).
 
 ## Credits
 We got and modified much code from [scikit-learn](https://github.com/scikit-learn/scikit-learn), [cocoapi](https://github.com/cocodataset/cocoapi), 
