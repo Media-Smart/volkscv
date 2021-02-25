@@ -1,5 +1,5 @@
-import json
 import os
+import json
 from collections import defaultdict
 
 import numpy as np
@@ -12,12 +12,18 @@ class MMDETParser(BaseParser):
 
     Args:
         anno_path (str): Path of annotation file.
+        imgid2filename (dict): Mapping relations between image id and filename.
+
+            Examples:
+                imgid2filename = dict(1='example1.jpg', 2='example2.jpg')
+
         categories (list or tuple): All categories of data.
         label_start (int): The first Label index. Default: 1.
     """
 
     def __init__(self,
                  anno_path,
+                 imgid2filename,
                  categories=None,
                  label_start=1,
                  **kwargs):
@@ -25,42 +31,45 @@ class MMDETParser(BaseParser):
 
         self.categories = categories
         self.label_start = label_start
+        self.imgid2filename = imgid2filename
 
-        self.data = json.load(open(anno_path, 'r'))
+        self.data = self.load_data(anno_path)
 
-    def __call__(self, need_shape=True):
-        fname_list = []
-        shapes_list = []
-        bboxes_list = []
-        labels_list = []
-        scores_list = []
-        segs_list = []
-        data = defaultdict(list)
-        for item in self.data:
-            if self.imgs_list is not None and \
-                    item['image_id'] not in self.imgs_list:
-                continue
-            fname = os.path.join(self.imgs_folder,
-                                 f"{item['image_id']}.{self.extension}")
+    def load_data(self, anno_path):
+        data = json.load(open(anno_path, 'r'))
+        result = defaultdict(list)
+        for item in data:
+            fname = self.imgid2filename[item['image_id']]
             x1, y1, w, h = item['bbox']
             bbox = list(map(float, [x1, y1, x1 + w, y1 + h]))
-            data[fname].append(
+            result[fname].append(
                 [bbox, item['score'], item['category_id'] - self.label_start])
+        return result
 
-        for key, value in data.items():
-            bbox = []
-            score = []
-            category_id = []
-            height, width = self._get_shape(key) if need_shape else (0, 0)
-            for v in value:
-                bbox.append(v[0])
-                score.append(v[1])
-                category_id.append(v[2])
-            fname_list.append(key)
+    def __call__(self, need_shape=True):
+        fname_list, shapes_list, bboxes_list, labels_list, scores_list, \
+        segs_list = [], [], [], [], [], []
+        for id, name in self.imgid2filename.items():
+            if self.imgs_list is not None and name not in self.imgs_list:
+                continue
+
+            if name in self.data:
+                bboxes, scores, category_ids = list(zip(*self.data[name]))
+                bboxes = np.array(bboxes)
+                scores = np.array(scores)
+                category_ids = np.array(category_ids)
+            else:
+                bboxes = np.zeros((0, 4))
+                scores = np.zeros((0,))
+                category_ids = np.zeros((0,))
+            fname = os.path.join(self.imgs_folder, name)
+            height, width = self._get_shape(fname) if need_shape else (0, 0)
+
+            fname_list.append(fname)
             shapes_list.append([width, height])
-            bboxes_list.append(np.array(bbox))
-            scores_list.append(np.array(score))
-            labels_list.append(np.array(category_id))
+            bboxes_list.append(bboxes)
+            scores_list.append(scores)
+            labels_list.append(category_ids)
 
         self.result = dict(
             img_names=np.array(fname_list),

@@ -28,10 +28,7 @@ class TXTParser(BaseParser):
             "For txt file parser, the imgs_list attribute shouldn't be None."
 
     def __call__(self, need_shape=True):
-        fname_list = []
-        labels_list = []
-        shapes_list = []
-        scores_list = []
+        fname_list, labels_list, shapes_list, scores_list = [], [], [], []
         fnames, annos = read_imglist(self.txt_file)
         for fname, anno in zip(fnames, annos):
             fname = os.path.join(self.imgs_folder, fname)

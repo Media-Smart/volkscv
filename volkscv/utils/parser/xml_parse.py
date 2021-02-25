@@ -42,12 +42,8 @@ class XMLParser(BaseParser):
         self.cat2label = {cat: i for i, cat in enumerate(self.categories)}
 
     def __call__(self, need_shape=True):
-        fname_list = []
-        shapes_list = []
-        bboxes_list = []
-        labels_list = []
-        bboxes_ignore_list = []
-        labels_ignore_list = []
+        fname_list, shapes_list, bboxes_list, bboxes_ignore_list, labels_list, \
+        labels_ignore_list = [], [], [], [], [], []
         for img_id in self.imgs_list:
             fname = os.path.join(self.imgs_folder, f'{img_id}.{self.extension}')
             xml_path = os.path.join(self.xmls_folder, f'{img_id}.xml')

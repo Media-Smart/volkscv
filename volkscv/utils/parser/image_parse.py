@@ -23,9 +23,7 @@ class ImageParser(BaseParser):
         self.categories = os.listdir(self.imgs_folder)
 
     def __call__(self, need_shape=True):
-        fname_list = []
-        shapes_list = []
-        labels_list = []
+        fname_list, shapes_list, labels_list = [], [], []
         for idx, label in enumerate(self.categories):
             subfolder = os.path.join(self.imgs_folder, label)
             if os.path.isdir(subfolder):
