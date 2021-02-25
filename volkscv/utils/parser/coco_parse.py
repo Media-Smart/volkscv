@@ -38,6 +38,10 @@ class COCOParser(BaseParser):
         for ann in self.data['annotations']:
             self.img2anns[ann['image_id']].append(ann)
 
+        self.imgid2filename = dict()
+        for img in self.data['images']:
+            self.imgid2filename[img['id']] = img['file_name']
+
     def _check_ignore(self, ann):
         """Check whether the box needs to be ignored or not.
 
@@ -50,13 +54,8 @@ class COCOParser(BaseParser):
                ann.get('iscrowd', False)
 
     def __call__(self, need_shape=True):
-        fname_list = []
-        shapes_list = []
-        bboxes_list = []
-        labels_list = []
-        segs_list = []
-        bboxes_ignore_list = []
-        labels_ignore_list = []
+        fname_list, shapes_list, bboxes_list, labels_list, segs_list, \
+        bboxes_ignore_list, labels_ignore_list = [], [], [], [], [], [], []
         for img in self.data['images']:
             if self.imgs_list is not None and \
                     img['file_name'] not in self.imgs_list:
@@ -71,11 +70,7 @@ class COCOParser(BaseParser):
 
             ann_info = [ann for ann in self.img2anns[img_id]]
 
-            bboxes = []
-            labels = []
-            segs = []
-            bboxes_ignore = []
-            labels_ignore = []
+            bboxes, labels, segs, bboxes_ignore, labels_ignore = [], [], [], [], []
             for i, ann in enumerate(ann_info):
                 ignore = self.ignore and self._check_ignore(ann)
                 x1, y1, w, h = ann['bbox']
@@ -127,6 +122,7 @@ class COCOParser(BaseParser):
             segs=np.array(segs_list),
             bboxes_ignore=np.array(bboxes_ignore_list),
             labels_ignore=np.array(labels_ignore_list),
+            imgid2filename=self.imgid2filename,
         )
 
         return self.result
